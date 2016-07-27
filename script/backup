@@ -1,0 +1,133 @@
+#!/bin/bash -O expand_aliases
+#set -x
+# import configuration
+. ${0%/*}/.backup.conf
+
+
+function get_abs_path {
+    source_relative="$1"
+    
+    # Use config'd path as relative and absolute if the path
+    # is absolute.
+    # full path will appear in backup structure if specified,
+    # even if 
+    if [[ "$source_relative" = /* ]]; then
+	source_absolute=${source_relative}
+    else
+	source_absolute="${HOME}/${source_relative}"
+    fi
+
+    echo ${source_absolute%/}
+}
+
+function create_backup_dir {
+    target=$(target_path $1)
+    parent=${target%/*}
+    # verify or create parent
+    [ -d $parent ] || mkdir -p $parent
+
+    # skip if parent directory can't be created
+    if [ ! -d $parent ]; then
+	echo "can't create parent directory. skipping file..." >&2
+	echo "$parent" >&2
+	return 1
+    fi
+}
+
+function sync_to_target {
+    target=$(target_path $1)
+    rsync -avui --exclude="*.del" --exclude="*~" \
+	  $1 ${target%/*}
+
+}
+
+function sync_from_target {
+    target=$(target_path $1)
+    rsync -avui --exclude="*.del" --exclude="*~" \
+	  $target ${source%/*}
+}
+
+# Assume source is a directory
+# A file would require manual intervention
+# to remove it from the config file anyway
+function remove_dot_dels {
+    source=$1
+
+    # find all *.del files
+    dels=$(find "$source" -name "*.del" -print)
+
+    # stop if nothing is found
+    [ ${#dels[@]} -eq 0 ] && return 0
+
+    # change context, preserving cwd
+    # changing so we can run git commands safely
+    pushd ${backup_target}
+
+    set -x
+    for f in ${dels[@]}; do
+	file=${f#$HOME/}
+	if [ -e ${file%.del} ]; then
+	    echo -e "Removing backup file: ${backup_target}/${file%.del} \n" \
+		 "and its original: $f"
+	    git rm ${file%.del}
+	else
+	    echo -e "backup file not found. Removing original: $f"
+	fi
+	rm -rf $f
+	# just in case you touched the file name with .del instead of
+	# changing its extension
+	[ -e ${f%.del} ] && rm -rf ${f%.del}
+    done
+    set +x
+
+    # pop back to caller's cwd
+    popd
+}
+
+function sync_source {
+    source="$1"
+    
+    echo "backing up ${source} to $(target_path $source)"
+    remove_dot_dels  $source
+    sync_to_target   $source
+    sync_from_target $source
+}
+
+
+function target_path {
+    echo ${backup_target}/${1#$HOME/}
+}
+
+function commit_changes {
+    pushd ${backup_target}
+
+    if ! [ -z "$(git status --porcelain)" ]; then
+	git add .
+	git commit -m "automated backup commit $(date)"
+    fi
+    
+    popd
+}
+
+function run_backup {
+    
+    
+    # We'll expect paths relative to $HOME, but we'll correct
+    # just in case we get an absolute path
+    for source_raw in ${backup_sources[@]}; do
+	
+	source=$(get_abs_path $source_raw) || continue
+	#parent=$(get_target_parent $source) || continue
+	
+	create_backup_dir $source
+	
+	# begin backup for this source
+	sync_source $source
+	
+    done
+
+    commit_changes
+
+}
+
+run_backup
