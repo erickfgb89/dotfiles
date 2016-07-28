@@ -1,5 +1,5 @@
 #!/bin/bash -O expand_aliases
-#set -x
+
 # import configuration
 . ${0%/*}/.backup.conf
 
@@ -9,8 +9,6 @@ function get_abs_path {
     
     # Use config'd path as relative and absolute if the path
     # is absolute.
-    # full path will appear in backup structure if specified,
-    # even if 
     if [[ "$source_relative" = /* ]]; then
 	source_absolute=${source_relative}
     else
@@ -63,7 +61,6 @@ function remove_dot_dels {
     # changing so we can run git commands safely
     pushd ${backup_target}
 
-    set -x
     for f in ${dels[@]}; do
 	file=${f#$HOME/}
 	if [ -e ${file%.del} ]; then
@@ -78,7 +75,6 @@ function remove_dot_dels {
 	# changing its extension
 	[ -e ${f%.del} ] && rm -rf ${f%.del}
     done
-    set +x
 
     # pop back to caller's cwd
     popd
@@ -100,17 +96,39 @@ function target_path {
 
 function commit_changes {
     pushd ${backup_target}
-
+    
     if ! [ -z "$(git status --porcelain)" ]; then
+	# Add everything. Use .gitignore to hide files
 	git add .
 	git commit -m "automated backup commit $(date)"
+	# push only if origin exists
+	git remote | grep origin && git push
     fi
     
     popd
 }
 
-function run_backup {
+function verify_backup_target {
+    if ! [ -d $backup_target ]; then
+	echo "backup target directory not found. Creating directory" >&2
+	mkdir -p $backup_target
+	if ! [ -d $backup_target ]; then
+	    echo "Failed to create backup target: ${backup_target}. Stopping..."
+	    exit 1
+	fi
+    fi
     
+    pushd $backup_target
+    if ! git status; then
+	echo "Git repository uninitialized. Creating now." >&2
+	git init
+    fi
+    popd
+}
+
+function run_backup {
+
+    verify_backup_target
     
     # We'll expect paths relative to $HOME, but we'll correct
     # just in case we get an absolute path
