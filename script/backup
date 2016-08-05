@@ -1,4 +1,4 @@
-#!/bin/bash -O expand_aliases
+#!/bin/bash
 
 # import configuration
 . ${0%/*}/.backup.conf
