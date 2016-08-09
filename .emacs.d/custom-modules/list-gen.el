@@ -43,7 +43,7 @@
 	  (mapc (lambda (line)
 ;		  (insert "test")
 		  (insert
-		   (concat line "\n")))
+		   (concat line " ")))
 		ret)
 	(insert ret))
     ret))
