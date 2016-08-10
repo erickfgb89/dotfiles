@@ -14,3 +14,4 @@
 (require 'margin-of-shame)
 (require 'list-gen)
 (require 'speedbar-opt)
+(require 'backup-files)
