@@ -11,7 +11,7 @@
    ("C-M-x" . kill-buffer-and-window)
    ("C-M-0" . delete-window)
    ("C-M-1" . delete-other-windows)
-   ("C-M-*" . eshell)
+   ("C-M-e" . eshell)
    ("C-M-r" . ido-recentf-open)
    ("C-M-s" . sr-speedbar-open-and-select)
    ("C-M-f" . find-file)))
