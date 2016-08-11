@@ -1,4 +1,4 @@
-(defconst animate-n-steps 3) 
+(defconst animate-n-steps 10)
 (defun emacs-reloaded ()
   (animate-string (concat ";; Initialization successful, welcome to "
   			  (substring (emacs-version) 0 16)
@@ -9,4 +9,3 @@
 
 
 (provide 'just-for-fun)
-

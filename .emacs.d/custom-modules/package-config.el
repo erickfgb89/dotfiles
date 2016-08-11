@@ -20,12 +20,9 @@
 
 
 ;;sublimity
-(require 'sublimity-map)
-(require 'sublimity-scroll)
+;;(require 'sublimity-map)
+;;(require 'sublimity-scroll)
 ;;(require 'sublimity-attractive) ;buffer truncate & center
-(sublimity-mode 1)
-
-;; workgroups
-(workgroups-mode 1)
+;;(sublimity-mode 1)
 
 (provide 'package-config)

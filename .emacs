@@ -14,4 +14,6 @@
 (require 'margin-of-shame)
 (require 'list-gen)
 (require 'speedbar-opt)
+(require 'workgroups)
 (require 'backup-files)
+(require 'just-for-fun)
