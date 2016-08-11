@@ -16,4 +16,5 @@
 (require 'speedbar-opt)
 (require 'workgroups)
 (require 'backup-files)
+(require 'shortcuts)
 (require 'just-for-fun)

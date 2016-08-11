@@ -13,5 +13,9 @@
  (kbd "C-c C-c f")
  'sr-speedbar-open)
 
+(defun sr-speedbar-open-and-select ()
+  (sr-speedbar-open)
+  (sr-speedbar-select-window))
+
 
 (provide 'speedbar-opt)
