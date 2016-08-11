@@ -13,5 +13,7 @@
 (setq kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
 	    kill-buffer-query-functions))
+(setq x-select-enable-clipboard t)
+(setq require-final-newline t)
 
 (provide 'hide-ui)
