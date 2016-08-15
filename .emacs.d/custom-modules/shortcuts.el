@@ -15,6 +15,7 @@
    ("C-S-b" . switch-to-buffer)
    ("C-S-c" . caps-lock-mode)))
 
+(global-set-key (kbd "M-g") 'goto-line)
 
 
 (provide 'shortcuts)
