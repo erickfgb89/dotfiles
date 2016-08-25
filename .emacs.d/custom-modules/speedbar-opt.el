@@ -6,11 +6,11 @@
 
 
 (global-set-key
- (kbd "C-c C-c s")
+ (kbd "C-c s")
  'sr-speedbar-select-window)
 
 (global-set-key
- (kbd "C-c C-c f")
+ (kbd "C-c f")
  'sr-speedbar-open)
 
 (defun sr-speedbar-open-and-select ()
