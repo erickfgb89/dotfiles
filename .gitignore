@@ -2,3 +2,4 @@
 \#*
 .\#*
 *.del
+.backup.conf
