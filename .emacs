@@ -3,7 +3,6 @@
 	     "~/.emacs.d/custom-modules/")
 
 (require 'package-config)
-(require 'pacman)
 (require 'hide-ui)
 (require 'ruby-rake-printer)
 (require 'indents)
