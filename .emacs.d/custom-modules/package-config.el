@@ -23,7 +23,8 @@
    websocket
    yaml-mode
    sublimity
-   workgroups2))
+   workgroups2
+   lua-mode))
 
 
 ;;sublimity
