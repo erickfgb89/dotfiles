@@ -123,6 +123,9 @@ function verify_backup_target {
 	echo "Git repository uninitialized. Creating now." >&2
 	git init
     fi
+
+    # pull if origin exists
+    git remote | grep origin && git pull
     popd
 }
 
