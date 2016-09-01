@@ -4,4 +4,4 @@
 	    (font-lock-add-keywords nil
 				    '(("##.*$" . font-lock-keyword-face)))))
 
-(provide 'text-comments)
+

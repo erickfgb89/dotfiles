@@ -6,4 +6,4 @@
 (package-initialize)
 
 
-(provide 'pacman)
+

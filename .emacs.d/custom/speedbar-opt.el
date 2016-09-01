@@ -18,4 +18,4 @@
   (sr-speedbar-select-window))
 
 
-(provide 'speedbar-opt)
+

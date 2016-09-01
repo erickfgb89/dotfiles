@@ -8,4 +8,4 @@
 (add-hook 'after-init-hook 'emacs-reloaded) 
 
 
-(provide 'just-for-fun)
+

@@ -17,5 +17,5 @@
 			    "/usr/local/bin:"
 			    (getenv "PATH")))))
 
-(provide 'eshell-custom)
+
 

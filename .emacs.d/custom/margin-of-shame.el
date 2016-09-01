@@ -1,4 +1,4 @@
-(require 'column-marker)
+;;(require 'column-marker)
 
 (mapc (lambda (mode)
 	(add-hook mode
@@ -19,7 +19,5 @@
 		  (message "Adding column marker at 80")
 		  (column-marker-1 80)))
 
-	 
-(provide 'margin-of-shame)
 
 

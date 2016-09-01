@@ -16,4 +16,4 @@
 (setq x-select-enable-clipboard t)
 (setq require-final-newline t)
 
-(provide 'hide-ui)
+

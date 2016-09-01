@@ -49,4 +49,4 @@
       (goto-char (point-min))
       (kill-all-prints))))
 
-(provide 'ruby-rake-printer)
+
