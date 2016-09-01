@@ -2,4 +2,4 @@
 \#*
 .\#*
 *.del
-.backup.conf
+script/.backup.conf
