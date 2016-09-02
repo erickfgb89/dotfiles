@@ -36,6 +36,12 @@
 (define-abbrev-table 'global-abbrev-table
   '(
     ("xdeploy" "eventer-deployments" nil 2)
+    ("xkiosk" "eventer_kiosk" nil 0)
+    ("xmailroom" "eventer_mailroom" nil 0)
+    ("xorders" "orders_images" nil 0)
+    ("xreceiving" "eventer_receiving" nil 0)
+    ("xshipping" "eventer_shipping" nil 0)
+    ("xsorting" "eventer_sorting" nil 0)
    ))
 
 (define-abbrev-table 'help-mode-abbrev-table '())
