@@ -26,7 +26,8 @@
    yaml-mode
    sublimity
    workgroups2
-   lua-mode))
+   lua-mode
+   highlight-chars))
 
 
 ;;sublimity
