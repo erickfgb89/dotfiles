@@ -38,4 +38,3 @@
 ;;(require 'sublimity-attractive) ;buffer truncate & center
 ;;(sublimity-mode 1)
 
-(provide 'package-config)
