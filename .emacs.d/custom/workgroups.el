@@ -9,6 +9,6 @@
       wg-mode-line-decor-right-brace "]"  ; how to surround it
       wg-mode-line-decor-divider ":")
 
-(workgroups-mode 1)
+(workgroups-mode 0)
 
 

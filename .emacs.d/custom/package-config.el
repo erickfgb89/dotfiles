@@ -27,7 +27,9 @@
    sublimity
    workgroups2
    lua-mode
-   highlight-chars))
+   highlight-chars
+   caps-lock
+   ecb))
 
 
 ;;sublimity

@@ -2,14 +2,6 @@
 ;;(require 'highlight-chars)
 
 ;;https://www.emacswiki.org/emacs/EightyColumnRule
-(custom-set-faces
- '(my-tab-face
-   ((((class color)) (:foreground "black" :weight bold :underline t))) t)
- '(my-trailing-space-face
-   ((((class color)) (:foreground "black" :weight bold :underline t))) t)
- '(my-long-line-face
-   ((((class color)) (:foreground "black" :weight bold :underline t))) t))
-
 
 (if (fboundp 'global-font-lock-mode)
     (global-font-lock-mode 1))
