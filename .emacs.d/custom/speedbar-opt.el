@@ -2,7 +2,9 @@
 ;;; https://www.emacswiki.org/emacs/SrSpeedbar
 
 ;;speedbar options
-(setq sr-speedbar-skip-other-window-p t)
+(setq
+ sr-speedbar-skip-other-window-p t
+ speedbar-show-unknown-files t)
 
 
 (defun sr-speedbar-open-and-select ()

@@ -2,6 +2,7 @@
     (f (directory-files "~/.emacs.d/custom" t "^[[:word:]_-]+\\.el$"))
   (message "loading file: %s" f)
   (load f))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -1,8 +1,9 @@
 (require 'eshell)
 (require 'em-smart)
-(setq eshell-where-to-jump 'begin)
-(setq eshell-review-quick-commands nil)
-(setq eshell-smart-space-goes-to-end t)
+(setq
+ eshell-where-to-jump 'begin
+ eshell-review-quick-commands nil
+ eshell-smart-space-goes-to-end t)
 
 (global-set-key (kbd "C-x *") 'eshell)
 
