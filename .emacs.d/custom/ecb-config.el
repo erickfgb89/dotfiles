@@ -4,6 +4,7 @@
  ecb-layout-name "left15"
  ecb-compile-window-height 6
  ecb-compile-window-width 'edit-window
+ ecb-compile-window-temporarily-enlarge 'after-selection
  ecb-windows-width 0.25
  ecb-auto-activate t
  ecb-other-window-behavior 'smart
