@@ -1,3 +1,7 @@
+(add-to-list
+ 'load-path
+ "~/.emacs.d/custom/lib")
+
 (dolist
     (f (directory-files "~/.emacs.d/custom" t "^[[:word:]_-]+\\.el$"))
   (message "loading file: %s" f)
