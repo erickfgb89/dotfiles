@@ -10,4 +10,5 @@
  ecb-other-window-behavior 'smart
  ecb-show-sources-in-directories-buffer 'always
  auto-expand-directory-tree 'best
- ecb-eshell-enlarge-when-eshell nil)
+ ecb-eshell-enlarge-when-eshell nil
+ ecb-tip-of-the-day nil)

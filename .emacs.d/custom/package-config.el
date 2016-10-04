@@ -29,7 +29,8 @@
    lua-mode
    highlight-chars
    caps-lock
-   ecb))
+   ecb
+   magit))
 
 
 ;;sublimity
@@ -37,4 +38,4 @@
 ;;(require 'sublimity-scroll)
 ;;(require 'sublimity-attractive) ;buffer truncate & center
 ;;(sublimity-mode 1)
-
+;;(sublimity-map-set-delay nil)
