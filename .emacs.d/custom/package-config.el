@@ -30,7 +30,8 @@
    highlight-chars
    caps-lock
    ecb
-   magit))
+   magit
+   elixir-mode))
 
 
 ;;sublimity
