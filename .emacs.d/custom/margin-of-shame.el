@@ -11,7 +11,8 @@
 	 text-mode-hook
 	 haskell-mode-hook
 	 literate-haskell-mode-hook
-	 yaml-mode-hook ))
+	 yaml-mode-hook
+	 elixir-mode-hook ))
 
 (global-set-key (kbd "C-c C-m")
 		(lambda ()
