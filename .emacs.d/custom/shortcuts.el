@@ -28,4 +28,4 @@
  )
 
 (global-set-key (kbd "M-g") 'goto-line)
-
+(global-set-key (kbd "RET") 'newline-and-indent)

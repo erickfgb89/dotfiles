@@ -4,16 +4,16 @@
 (and (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (show-paren-mode 1)
 (column-number-mode 1)
-(setq inhibit-startup-message t)
-(setq confirm-kill-emacs 'yes-or-no-p)
-(global-set-key (kbd "RET") 'newline-and-indent)
 (fset 'yes-or-no-p 'y-or-n-p)
+
 (setq inhibit-startup-message t
-      inhibit-startup-echo-area-message t)
-(setq kill-buffer-query-functions
-      (remq 'process-kill-buffer-query-function
-	    kill-buffer-query-functions))
-(setq x-select-enable-clipboard t)
-(setq require-final-newline t)
+      confirm-kill-emacs 'yes-or-no-p
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t
+      kill-buffer-query-functions (remq
+				   'process-kill-buffer-query-function
+				   kill-buffer-query-functions)
+      x-select-enable-clipboard t
+      require-final-newline t)
 
 
