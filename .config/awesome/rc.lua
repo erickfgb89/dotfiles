@@ -219,6 +219,9 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
+   -- {{{ my stuff
+   awful.key({ modkey,           }, "e", function () awful.util.spawn("emacs") end),
+   -- }}}
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
