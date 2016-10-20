@@ -9,25 +9,22 @@
 
 (add-hook 'eshell-mode-hook
 	  (lambda ()
-	    (setq eshell-path-env (concat
-				   ;"~/.asdf/bin:"
-				   ;"~/.asdf/shims:"
-				   ;"~/.rbenv/shims:"
-				   "/usr/local/bin:"
-				   eshell-path-env))
-	    (setenv "PATH" (concat
-			    ;"~/.asdf/bin:"
-			    ;"~/.asdf/shims:"
-			    ;"~/.rbenv/shims:"
-			    "/usr/local/bin:"
-			    (getenv "PATH")))))
-
-(setenv "PATH" (concat
-		"~/.asdf/bin;"
-		"~/.asdf/shims;"
-		"~/.rbenv/shims;"
-		"/usr/local/bin;"
-		(getenv "PATH")))
-
-
-
+	    (let ((home (getenv "HOME")))
+	      (setq eshell-path-env (replace-regexp-in-string
+				     "~"
+				     home
+				     (concat
+				      "~/.asdf/bin:"
+				      "~/.asdf/shims:"
+				      "~/.rbenv/shims:"
+				      "/usr/local/bin:"
+				      eshell-path-env)))
+	      (setenv "PATH" (replace-regexp-in-string
+			      "~"
+			      home
+			      (concat
+			       "~/.asdf/bin:"
+			       "~/.asdf/shims:"
+			       "~/.rbenv/shims:"
+			       "/usr/local/bin:"
+			       (getenv "PATH")))))))
