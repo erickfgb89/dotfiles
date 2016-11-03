@@ -6,7 +6,7 @@
  ecb-compile-window-width 'edit-window
  ecb-compile-window-temporarily-enlarge 'after-selection
  ecb-windows-width 0.25
- ;ecb-auto-activate t
+ ecb-auto-activate f
  ecb-other-window-behavior 'smart
  ecb-show-sources-in-directories-buffer 'always
  auto-expand-directory-tree 'best
