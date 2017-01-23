@@ -24,7 +24,7 @@
  '(ecb-options-version "2.50")
  '(package-selected-packages
    (quote
-    (elixir-mode magit ecb caps-lock highlight-chars lua-mode workgroups2 sublimity yaml-mode websocket sr-speedbar recentf-ext neotree markdown-preview-mode markdown-mode haskell-mode column-marker))))
+    (dash-at-point geeknote ac-inf-ruby inf-ruby flymake-ruby elixir-mode magit ecb caps-lock highlight-chars lua-mode workgroups2 sublimity yaml-mode websocket sr-speedbar recentf-ext neotree markdown-preview-mode markdown-mode haskell-mode column-marker))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

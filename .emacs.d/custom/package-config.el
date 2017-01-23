@@ -31,6 +31,9 @@
    caps-lock
    ecb
    magit
+   flymake-ruby
+   inf-ruby
+   ac-inf-ruby
    elixir-mode))
 
 
