@@ -12,31 +12,20 @@
 
 ;; highlight tabs, long lines and trailing spaces
 ;; in the below listed modes
-;; (mapc
-;;  (lambda (mode)
-;;    (add-hook
-;;     (make-symbol (concat (symbol-name mode) "-mode-hook"))
-;;     (lambda ()
-;;       (setq font-lock-keywords
-;; 	    (append font-lock-keywords
-;; 		    '(("\t+" (0 'my-tab-face t))
-;; 		      ("^.\\{81,\\}$" (0 'my-long-line-face t))
-;; 		      ("[ \t]+$"      (0 'my-trailing-space-face t))))))))
-;;  '(c
-;;    java
-;;    haskell
-;;    shell-script
-;;    ruby
-;;    yaml
-;;    javascript
-;;    emacs-lisp))
+(mapc
+ (lambda (mode)
+   (font-lock-add-keywords
+    mode
+    '(("\t+" (0 'my-tab-face t))
+      ("^.\\{81,\\}$" (0 'my-long-line-face t))
+      ("[ \t]+$"      (0 'my-trailing-space-face t)))))
+ '(c-mode
+   java-mode
+   haskell-mode
+   shell-script-mode
+   ruby-mode
+   yaml-mode
+   javascript-mode
+   emacs-lisp-mode))
 
-(add-hook 'ruby-mode-hook
-            (function
-             (lambda ()
-               (setq font-lock-keywords
-                     (append font-lock-keywords
-                             '(("\t+" (0 'my-tab-face t))
-                               ("^.\\{81,\\}$" (0 'my-long-line-face t))
-                               ("[ \t]+$"      (0 'my-trailing-space-face t))))))))
-
+(setq-default show-trailing-whitespace t)

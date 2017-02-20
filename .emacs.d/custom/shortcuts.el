@@ -1,10 +1,13 @@
 (require 'shortcuts)
 
+(global-unset-key (kbd "C-M-w"))
+
 (add-shortcuts
  (list
   (cons "o" 'other-window)
   (cons "k" 'kill-this-buffer)
-  (cons "w" 'kill-buffer-and-window)
+  ;;I don't currently use this, so meh. I'll choose another
+  ;(cons "w" 'kill-buffer-and-window)
   (cons "0" 'delete-window)
   (cons "1" 'delete-other-windows)
   (cons "2" 'split-window-below)
