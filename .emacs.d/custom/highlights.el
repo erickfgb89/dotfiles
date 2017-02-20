@@ -26,6 +26,7 @@
    ruby-mode
    yaml-mode
    javascript-mode
+   python-mode
    emacs-lisp-mode))
 
 (setq-default show-trailing-whitespace t)
