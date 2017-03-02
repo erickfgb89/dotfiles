@@ -34,6 +34,7 @@
    flymake-ruby
    inf-ruby
    ac-inf-ruby
+   color-theme-solarized
    elixir-mode))
 
 

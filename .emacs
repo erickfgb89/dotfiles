@@ -15,21 +15,19 @@
     (f (directory-files "~/.emacs.d/custom" t "^[[:word:]_-]+\\.el$"))
   (message "loading file: %s" f)
   (load f))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ecb-options-version "2.50")
  '(package-selected-packages
    (quote
-    (dash-at-point geeknote ac-inf-ruby inf-ruby flymake-ruby elixir-mode magit ecb caps-lock highlight-chars lua-mode workgroups2 sublimity yaml-mode websocket sr-speedbar recentf-ext neotree markdown-preview-mode markdown-mode haskell-mode column-marker))))
+    (inf-ruby websocket markdown-mode yaml-mode workgroups2 sublimity sr-speedbar recentf-ext neotree markdown-preview-mode magit lua-mode highlight-chars haskell-mode geeknote flymake-ruby elixir-mode ecb dash-at-point column-marker color-theme-solarized cl-lib-highlight caps-lock ac-inf-ruby))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(my-long-line-face ((((class color)) (:foreground "black" :weight bold :underline t))) t)
- '(my-tab-face ((((class color)) (:foreground "black" :weight bold :underline t))) t)
- '(my-trailing-space-face ((((class color)) (:foreground "black" :weight bold :underline t))) t))
+ '(my-long-line-face ((((class color)) (:foreground "white" :weight bold :underline t))) t)
+ '(my-tab-face ((((class color)) (:foreground "white" :weight bold :underline t))) t)
+ '(my-trailing-space-face ((((class color)) (:foreground "white" :weight bold :underline t))) t))
