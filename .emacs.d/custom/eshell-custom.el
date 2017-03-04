@@ -19,6 +19,8 @@
 				      "~/.asdf/bin:"
 				      "~/.asdf/shims:"
 				      "~/.rbenv/shims:"
+				      "~/.cabal/bin:"
+				      "~/.local/bin:"
 				      "/usr/local/bin:"
 				      eshell-path-env)))
 	      (setenv "PATH" (replace-regexp-in-string
@@ -28,6 +30,8 @@
 			       "~/.asdf/bin:"
 			       "~/.asdf/shims:"
 			       "~/.rbenv/shims:"
+			       "~/.cabal/bin:"
+			       "~/.local/bin"
 			       "/usr/local/bin:"
 			       (getenv "PATH")))))))
 
