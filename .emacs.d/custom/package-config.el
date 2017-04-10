@@ -34,6 +34,8 @@
    flymake-ruby
    inf-ruby
    ac-inf-ruby
+   robe
+   groovy-mode
    color-theme-solarized
    elixir-mode))
 
