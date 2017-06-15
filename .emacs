@@ -15,6 +15,7 @@
     (f (directory-files "~/.emacs.d/custom" t "^[[:word:]_-]+\\.el$"))
   (message "loading file: %s" f)
   (load f))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -32,3 +33,6 @@
  '(my-long-line-face ((((class color)) (:foreground "white" :weight bold :underline t))) t)
  '(my-tab-face ((((class color)) (:foreground "white" :weight bold :underline t))) t)
  '(my-trailing-space-face ((((class color)) (:foreground "white" :weight bold :underline t))) t))
+
+;;(setq spacemacs-start-directory "~/.emacs.d/spacemacs/")
+;;(load-file (concat spacemacs-start-directory "init.el"))

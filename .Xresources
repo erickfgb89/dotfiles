@@ -77,3 +77,5 @@
 *color15:               S_base3
 
 XTerm*metaSendsEscape: true
+XTerm*faceName: DejaVu Sans Mono
+XTerm*faceSize: 11

@@ -1,1 +1,1 @@
-export PATH=~/.rbenv/shims:$PATH:~/dev/eventer-workstation-utils:/usr/local/bin
+export PATH=~/.rbenv/shims:~/.rbenv/bin:$PATH:~/dev/eventer-workstation-utils/bin:/usr/local/bin

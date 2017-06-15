@@ -1,6 +1,8 @@
 (require 'shortcuts)
 
 (global-unset-key (kbd "C-M-w"))
+(global-unset-key (kbd "C-M-e"))
+(global-unset-key (kbd "C-M-t"))
 
 (add-shortcuts
  (list
@@ -18,10 +20,11 @@
   (cons "b" 'switch-to-buffer)
   (cons "c" 'caps-lock-mode)
   (cons "x" 'kmacro-end-or-call-macro)
-  (cons "z d" 'ecb-goto-window-directories)
-  (cons "z s" 'ecb-goto-window-sources)
-  (cons "z h" 'ecb-goto-window-history)
-  (cons "z m" 'ecb-goto-window-methods)
+  (cons "z" 'repeat)
+  (cons "t d" 'ecb-goto-window-directories)
+  (cons "t s" 'ecb-goto-window-sources)
+  (cons "t h" 'ecb-goto-window-history)
+  (cons "t m" 'ecb-goto-window-methods)
   (cons "g s" 'magit-status)
   (cons "g c" 'magit-commit)
   (cons "g p" 'magit-push)
@@ -34,5 +37,8 @@
   )
  )
 
+(global-set-key (kbd "C-M-/") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-?") 'comment-or-uncomment-region)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "RET") 'newline-and-indent)
+

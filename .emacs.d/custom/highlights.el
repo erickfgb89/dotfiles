@@ -22,7 +22,8 @@
     mode
     '(("\t+" (0 'my-tab-face t))
       ("^.\\{81,\\}$" (0 'my-long-line-face t))
-      ("[ \t]+$"      (0 'my-trailing-space-face t)))))
+      ("[ \t]+$"      (0 'my-trailing-space-face t))
+      ("# TODO.*$"    (0 'font-lock-keyword-face)))))
  '(c-mode
    java-mode
    haskell-mode

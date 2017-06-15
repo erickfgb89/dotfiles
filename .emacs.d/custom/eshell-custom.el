@@ -7,8 +7,6 @@
  eshell-review-quick-commands nil
  eshell-smart-space-goes-to-end t)
 
-(global-set-key (kbd "C-x *") 'eshell)
-
 (add-hook 'eshell-mode-hook
 	  (lambda ()
 	    (let ((home (getenv "HOME")))
