@@ -1,7 +1,6 @@
 (require 'shortcuts)
 
 (global-unset-key (kbd "C-M-w"))
-(global-unset-key (kbd "C-M-e"))
 (global-unset-key (kbd "C-M-t"))
 
 (add-shortcuts
