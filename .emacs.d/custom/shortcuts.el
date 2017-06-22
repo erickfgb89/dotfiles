@@ -2,6 +2,7 @@
 
 (global-unset-key (kbd "C-M-w"))
 (global-unset-key (kbd "C-M-t"))
+(global-unset-key (kbd "C-M-p")) ;newline-and-indent
 
 (add-shortcuts
  (list
@@ -33,6 +34,8 @@
   (cons "w o" 'wg-switch-to-workgroup)
   (cons "w k" 'wg-kill-workgroup)
   (cons "w w" 'wg-kill-workgroup-and-buffers)
+  (cons "p f" 'projectile-find-file)
+  (cons "p b" 'projectile-switch-to-buffer)
   )
  )
 
@@ -40,4 +43,5 @@
 (global-set-key (kbd "C-?") 'comment-or-uncomment-region)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "RET") 'newline-and-indent)
+
 

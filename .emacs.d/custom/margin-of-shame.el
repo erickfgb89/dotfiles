@@ -8,6 +8,7 @@
       '( ruby-mode-hook
 	 java-mode-hook
 	 lisp-mode-hook
+	 emacs-lisp-mode-hook
 	 text-mode-hook
 	 haskell-mode-hook
 	 literate-haskell-mode-hook
