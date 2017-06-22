@@ -14,6 +14,7 @@
 				   'process-kill-buffer-query-function
 				   kill-buffer-query-functions)
       x-select-enable-clipboard t
+      visible-bell 1
       require-final-newline t)
 
 

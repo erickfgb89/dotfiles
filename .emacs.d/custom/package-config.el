@@ -31,7 +31,8 @@
    caps-lock
    ecb
    magit
-   flymake-ruby
+   enh-ruby-mode
+   ;;flymake-ruby
    inf-ruby
    ac-inf-ruby
    robe
