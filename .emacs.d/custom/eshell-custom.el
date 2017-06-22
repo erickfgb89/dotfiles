@@ -7,6 +7,8 @@
  eshell-review-quick-commands nil
  eshell-smart-space-goes-to-end t)
 
+;; Found exec-path here
+;; https://www.emacswiki.org/emacs/ExecPath
 (add-hook 'eshell-mode-hook
 	  (lambda ()
 	    (let ((home (getenv "HOME")))
@@ -21,6 +23,17 @@
 				      "~/.local/bin:"
 				      "/usr/local/bin:"
 				      eshell-path-env)))
+	      (setq exec-path (replace-regexp-in-string
+				     "~"
+				     home
+				     (concat
+				      "~/.asdf/bin:"
+				      "~/.asdf/shims:"
+				      "~/.rbenv/shims:"
+				      "~/.cabal/bin:"
+				      "~/.local/bin:"
+				      "/usr/local/bin:"
+				      exec-path)))
 	      (setenv "PATH" (replace-regexp-in-string
 			      "~"
 			      home
