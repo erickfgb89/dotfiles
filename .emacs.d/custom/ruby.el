@@ -11,3 +11,6 @@
 
 ;;Install exuberant-ctags if ctags fails
 (speedbar-add-supported-extension ".rb")
+
+(when (eq system-type 'darwin)
+  (setq projectile-tags-command "/usr/local/bin/ctags -Re -f \"%s\" %s"))

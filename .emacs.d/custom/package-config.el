@@ -32,6 +32,7 @@
    ecb
    magit
    enh-ruby-mode
+   projectile
    ;;flymake-ruby
    inf-ruby
    ac-inf-ruby
