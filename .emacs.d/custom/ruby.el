@@ -10,7 +10,7 @@
 (setq projectile-enable-caching t)
 
 ;;Install exuberant-ctags if ctags fails
-(speedbar-add-supported-extension ".rb")
+;;(speedbar-add-supported-extension ".rb")
 
 (when (eq system-type 'darwin)
   (setq projectile-tags-command "/usr/local/bin/ctags -Re -f \"%s\" %s"))
