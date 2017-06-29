@@ -2,10 +2,6 @@
 
 ;; Mostly from: https://masteringemacs.org/article/find-files-faster-recent-files-package
 
-;; 'find-file-read-only apparently uses this shortcut, but
-;; I agree that this feature sucks and we can mask it
-(global-set-key (kbd "C-c C-c C-r") 'ido-recentf-open)
-
 ;; enable recent files
 (recentf-mode t)
 

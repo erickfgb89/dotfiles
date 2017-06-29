@@ -36,6 +36,7 @@
   (cons "w w" 'wg-kill-workgroup-and-buffers)
   (cons "p f" 'projectile-find-file)
   (cons "p b" 'projectile-switch-to-buffer)
+  (cons "p s" 'sr-speedbar-select-window)
   )
  )
 

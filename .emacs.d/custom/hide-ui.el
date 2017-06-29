@@ -15,6 +15,14 @@
 				   kill-buffer-query-functions)
       x-select-enable-clipboard t
       visible-bell 1
+      set-mark-command-repeat-pop 1
       require-final-newline t)
+
+(put 'downcase-word 'disabled nil)
+(put 'upcase-word 'disabled nil)
+(put 'capitalize-word 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+
 
 
