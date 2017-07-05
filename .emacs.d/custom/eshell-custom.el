@@ -1,12 +1,14 @@
 (require 'shortcuts)
 
 (setenv "PATH"
-	(concat "~/.rbenv/shims:"
-		"~/.asdf/shims"
-		"~/.asdf/bin"
-		"~/.cabal/bin"
-		"/usr/local/bin"
-		(getenv "PATH")))
+	(replace-regexp-in-string "~"
+				  (getenv "HOME")
+				  (concat "~/.rbenv/shims:"
+					  "~/.asdf/shims"
+					  "~/.asdf/bin"
+					  "~/.cabal/bin"
+					  "/usr/local/bin"
+					  (getenv "PATH"))))
 
 (defun select-or-start-eshell ()
     "Select visible eshell window or select/create eshell buffer in this window"

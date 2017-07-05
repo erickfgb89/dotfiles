@@ -39,6 +39,7 @@
    robe
    groovy-mode
    color-theme-solarized
+   company-inf-ruby
    elixir-mode))
 
 
