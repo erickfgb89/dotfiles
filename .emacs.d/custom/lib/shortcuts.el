@@ -26,7 +26,7 @@ list of dotted pairs of keys and functions to execute"
   (dolist (shortcut defs)
     (let ((key  (car shortcut))
 	  (func (cdr shortcut)))
-      (global-set-key (kbd (concat "C-" (shift key))) func))))
+      (global-set-key (kbd (concat "C-c C-" key)) func))))
 ;; (defun add-shortcuts (defs)
 ;;   "Add keyboard shortcuts as defined in defs. Defs is a
 ;; list of dotted pairs of keys and functions to execute"
