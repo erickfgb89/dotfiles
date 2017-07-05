@@ -1,5 +1,3 @@
-(setq custom-prefixes '("C-M-" "C-S-"))
-
 (setq symbol-map '( ( "0" . ")" )
 		    ( "1" . "!" )
 		    ( "2" . "@" )
@@ -28,7 +26,6 @@ list of dotted pairs of keys and functions to execute"
   (dolist (shortcut defs)
     (let ((key  (car shortcut))
 	  (func (cdr shortcut)))
-      (global-set-key (kbd (concat "C-M-" key)) func)
       (global-set-key (kbd (concat "C-" (shift key))) func))))
 ;; (defun add-shortcuts (defs)
 ;;   "Add keyboard shortcuts as defined in defs. Defs is a

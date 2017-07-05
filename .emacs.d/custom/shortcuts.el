@@ -1,8 +1,8 @@
 (require 'shortcuts)
 
-(global-unset-key (kbd "C-M-w"))
-(global-unset-key (kbd "C-M-t"))
-(global-unset-key (kbd "C-M-p")) ;newline-and-indent
+;; (global-unset-key (kbd "C-M-w"))
+;; (global-unset-key (kbd "C-M-t"))
+;; (global-unset-key (kbd "C-M-p")) ;newline-and-indent
 
 (add-shortcuts
  (list
@@ -40,7 +40,6 @@
   )
  )
 
-(global-set-key (kbd "C-M-/") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-?") 'comment-or-uncomment-region)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "RET") 'newline-and-indent)
