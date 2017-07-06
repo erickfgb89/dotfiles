@@ -1,9 +1,5 @@
 (require 'shortcuts)
 
-;; (global-unset-key (kbd "C-M-w"))
-;; (global-unset-key (kbd "C-M-t"))
-;; (global-unset-key (kbd "C-M-p")) ;newline-and-indent
-
 (add-shortcuts
  (list
   (cons "o" 'other-window)
