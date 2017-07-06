@@ -4,10 +4,10 @@
 	(replace-regexp-in-string "~"
 				  (getenv "HOME")
 				  (concat "~/.rbenv/shims:"
-					  "~/.asdf/shims"
-					  "~/.asdf/bin"
-					  "~/.cabal/bin"
-					  "/usr/local/bin"
+					  "~/.asdf/shims:"
+					  "~/.asdf/bin:"
+					  "~/.cabal/bin:"
+					  "/usr/local/bin:"
 					  (getenv "PATH"))))
 
 (defun select-or-start-eshell ()

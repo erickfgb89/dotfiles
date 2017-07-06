@@ -40,6 +40,7 @@
    groovy-mode
    color-theme-solarized
    company-inf-ruby
+   restclient
    elixir-mode))
 
 
