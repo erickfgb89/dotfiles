@@ -1,7 +1,13 @@
+(defconst animate-n-steps 10)
+(defun emacs-reloaded ()
+  (animate-string (concat ";; Initialization successful, welcome to "
+  			  (substring (emacs-version) 0 16)
+			  ".")
+		  0 0)
+  (newline-and-indent)  (newline-and-indent))
+
 (add-hook
- 'emacs-startup-hook
+ 'emacs-startup-hook ; not after-init-hook
  (lambda ()
-   ;; disabling ecb due to minibuffer completions with emacs 25.1
-   ;;(ecb-activate)
-   
+   (emacs-reloaded)
    ))

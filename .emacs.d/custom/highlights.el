@@ -34,4 +34,4 @@
    python-mode
    emacs-lisp-mode))
 
-(setq-default show-trailing-whitespace t)
+(setq-default show-trailing-whitespace nil)
