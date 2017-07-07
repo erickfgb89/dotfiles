@@ -39,5 +39,4 @@
 (global-set-key (kbd "C-?") 'comment-or-uncomment-region)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "RET") 'newline-and-indent)
-
-
+(global-set-key (kbd "C-z") 'god-mode)
