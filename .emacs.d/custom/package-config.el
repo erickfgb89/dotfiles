@@ -41,6 +41,8 @@
    color-theme-solarized
    company-inf-ruby
    restclient
+   use-package
+   god-mode
    elixir-mode))
 
 
