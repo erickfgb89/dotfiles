@@ -11,5 +11,9 @@
 
 ;;Install exuberant-ctags if ctags fails
 
+(setq rbenv-installation-dir "/usr/local/bin/")
+(defadvice inf-ruby-console-auto (before activate-rbenv-for-robe activate)
+  (rbenv-use-corresponding))
+
 (when (eq system-type 'darwin)
   (setq projectile-tags-command "/usr/local/bin/ctags -Re -f \"%s\" %s"))
