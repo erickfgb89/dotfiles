@@ -1,0 +1,6 @@
+(put 'downcase-word 'disabled nil)
+(put 'upcase-word 'disabled nil)
+(put 'capitalize-word 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)
