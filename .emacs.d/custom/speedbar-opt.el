@@ -8,8 +8,12 @@
    speedbar-directory-unshown-regexp "^\\.git$"
    speedbar-show-unknown-files t)
   :config
-  (sr-speedbar-open)
   (speedbar-add-supported-extension
    (list ".rb"
 	 "Rakefile"
 	 ".sh")))
+
+(setq sr-speedbar-width-x 50)
+(setq sr-speedbar-max-width 50)
+(setq sr-speedbar-default-width 50)
+

@@ -1,13 +1,10 @@
-(defconst animate-n-steps 10)
-(defun emacs-reloaded ()
-  (animate-string (concat ";; Initialization successful, welcome to "
-  			  (substring (emacs-version) 0 16)
-			  ".")
-		  0 0)
-  (newline-and-indent)  (newline-and-indent))
+(defun open-speedbar (proc evt)
+  (sr-speedbar-open))
 
 (add-hook
  'emacs-startup-hook ; not after-init-hook
  (lambda ()
-   (emacs-reloaded)
+   (set-process-sentinel
+    (start-process "sleep" "*sleep*" "sleep" "2" )
+    'open-speedbar)
    ))
