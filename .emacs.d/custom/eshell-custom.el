@@ -1,25 +1,38 @@
 (require 'shortcuts)
 
-(use-package eshell
-  :init
-  (setenv "PATH"
+;; (use-package eshell
+;;   :init
+;;   (setenv "PATH"
+;; 	(replace-regexp-in-string "~"
+;; 				  (getenv "HOME")
+;; 				  (concat "~/.rbenv/shims:"
+;; 					  "~/.asdf/shims:"
+;; 					  "~/.asdf/bin:"
+;; 					  "~/.cabal/bin:"
+;; 					  "/usr/local/bin:"
+;; 					  (getenv "PATH"))))
+;;   )
+
+(setenv "PATH"
 	(replace-regexp-in-string "~"
 				  (getenv "HOME")
 				  (concat "~/.rbenv/shims:"
 					  "~/.asdf/shims:"
 					  "~/.asdf/bin:"
 					  "~/.cabal/bin:"
+                                          "~/dev/eventer-workstation-utils/bin:"
 					  "/usr/local/bin:"
 					  (getenv "PATH"))))
-  )
-
 (setq exec-path
       (append exec-path
-	      '("~/.rbenv/shims:"
-		"~/.asdf/shims:"
-		"~/.asdf/bin:"
-		"~/.cabal/bin:"
-		"/usr/local/bin:")))
+              (mapcar (lambda (path)
+                        (replace-regexp-in-string "~" (getenv "HOME") path))
+                   '("~/.rbenv/shims"
+                     "~/.asdf/shims"
+                     "~/.asdf/bin"
+                     "~/.cabal/bin"
+                     "~/dev/eventer-workstation-utils/bin"
+                     "/usr/local/bin"))))
 
 (defun select-or-start-eshell ()
     "Select visible eshell window or select/create eshell buffer in this window"
