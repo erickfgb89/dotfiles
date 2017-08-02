@@ -43,6 +43,7 @@
    restclient
    use-package
    god-mode
+   terraform-mode
    elixir-mode))
 
 

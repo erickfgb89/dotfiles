@@ -43,3 +43,5 @@
 (setq face-remapping-alist '((whitespace-tab . whitespace-space-before-tab)))
 
 
+(setq sh-basic-offset 2
+        sh-indentation 2)

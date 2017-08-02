@@ -19,5 +19,4 @@
 		  week))
       (message "%s" file)
       (delete-file file))))
-      
 
