@@ -33,6 +33,7 @@
   (cons "p f" 'projectile-find-file)
   (cons "p t" 'projectile-find-tag)
   (cons "p b" 'projectile-switch-to-buffer)
+  (cons "p g" 'projectile-grep)
   (cons "p s" 'sr-speedbar-select-window)
   )
  )
