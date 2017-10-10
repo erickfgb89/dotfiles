@@ -16,7 +16,8 @@
   (setq
    ecb-eshell-auto-activate t
    ecb-eshell-buffer-sync 'always
-   ecb-layout-name "left15"
+   ;;ecb-layout-name "left15"
+   ecb-layout-name "left7"
    ecb-compile-window-height 6
    ecb-compile-window-width 'edit-window
    ecb-compile-window-temporarily-enlarge 'after-selection
