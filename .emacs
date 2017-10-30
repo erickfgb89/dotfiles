@@ -5,6 +5,10 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
+
 (add-to-list
  'load-path
  "~/.emacs.d/custom/lib")
@@ -24,7 +28,7 @@
  '(ecb-options-version "2.50")
  '(package-selected-packages
    (quote
-    (magit terraform-mode rbenv use-package god-mode restclient company-shell company-inf-ruby groovy-mode projectile enh-ruby-mode dockerfile-mode ediprolog robe inf-ruby websocket markdown-mode yaml-mode workgroups2 sublimity sr-speedbar recentf-ext neotree markdown-preview-mode lua-mode highlight-chars haskell-mode geeknote flymake-ruby elixir-mode ecb dash-at-point column-marker color-theme-solarized cl-lib-highlight caps-lock ac-inf-ruby))))
+    (projectile-speedbar projectile-mode ob-http magit terraform-mode rbenv use-package god-mode restclient company-shell company-inf-ruby groovy-mode projectile enh-ruby-mode dockerfile-mode ediprolog robe inf-ruby websocket markdown-mode yaml-mode workgroups2 sublimity sr-speedbar recentf-ext neotree markdown-preview-mode lua-mode highlight-chars haskell-mode geeknote flymake-ruby elixir-mode ecb dash-at-point column-marker color-theme-solarized cl-lib-highlight caps-lock ac-inf-ruby))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -9,7 +9,6 @@
 ;; TODO write time of last update so we only do this on new deploys
 ;; and periodically
 ;;(package-refresh-contents)
-(package-initialize)
 
 ;;installed packages
 (mapc

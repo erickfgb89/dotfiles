@@ -15,14 +15,14 @@
 
 (setenv "PATH"
 	(replace-regexp-in-string "~"
-				  (getenv "HOME")
-				  (concat "~/.rbenv/shims:"
-					  "~/.asdf/shims:"
-					  "~/.asdf/bin:"
-					  "~/.cabal/bin:"
+                                  (getenv "HOME")
+                                  (concat "~/.rbenv/shims:"
+                                          "~/.asdf/shims:"
+                                          "~/.asdf/bin:"
+                                          "~/.cabal/bin:"
                                           "~/dev/eventer-workstation-utils/bin:"
-					  "/usr/local/bin:"
-					  (getenv "PATH"))))
+                                          "/usr/local/bin:"
+                                          (getenv "PATH"))))
 (setq exec-path
       (append exec-path
               (mapcar (lambda (path)
@@ -43,7 +43,7 @@
 	   (t (eshell)))))
 
 (add-shortcuts (list
-		(cons "e" 'select-or-start-eshell)))
+                (cons "e" 'select-or-start-eshell)))
 
 
 ;; from https://www.emacswiki.org/emacs/EshellBmk

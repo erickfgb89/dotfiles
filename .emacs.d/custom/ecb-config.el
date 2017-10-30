@@ -12,19 +12,20 @@
 ;;  #'display-buffer-at-bottom--display-buffer-at-bottom-around)
 
 (use-package ecb
-  :init
-  (setq
-   ecb-eshell-auto-activate t
-   ecb-eshell-buffer-sync 'always
-   ;;ecb-layout-name "left15"
-   ecb-layout-name "left7"
-   ecb-compile-window-height 6
-   ecb-compile-window-width 'edit-window
-   ecb-compile-window-temporarily-enlarge 'after-selection
-   ecb-windows-width 0.2
-   ecb-auto-activate nil
-   ecb-other-window-behavior 'smart
-   ecb-show-sources-in-directories-buffer 'always
-   auto-expand-directory-tree 'best
-   ecb-eshell-enlarge-when-eshell nil
-   ecb-tip-of-the-day nil))
+	     :disabled
+	     :config
+	     (setq
+	      ecb-eshell-auto-activate t
+	      ecb-eshell-buffer-sync 'always
+	      ;;ecb-layout-name "left15"
+	      ecb-layout-name "left7"
+	      ecb-compile-window-height 6
+	      ecb-compile-window-width 'edit-window
+	      ecb-compile-window-temporarily-enlarge 'after-selection
+	      ecb-windows-width 0.2
+	      ecb-auto-activate nil
+	      ecb-other-window-behavior 'smart
+	      ecb-show-sources-in-directories-buffer 'always
+	      auto-expand-directory-tree 'best
+	      ecb-eshell-enlarge-when-eshell nil
+	      ecb-tip-of-the-day nil))
