@@ -4,5 +4,3 @@
 (setq save-abbrevs t)
 (setq-default abbrev-mode t)
 
-
-

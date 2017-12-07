@@ -10,6 +10,9 @@
 (load-theme 'solarized t)
 (enable-theme 'solarized)
 
+;;(set-default-font "DejaVu Sans Mono-10")
+(set-default-font "Inconsolata-12")
+
 ;;text highlights with ##
 (font-lock-add-keywords
  'text-mode '(("##.*$" . font-lock-keyword-face)))

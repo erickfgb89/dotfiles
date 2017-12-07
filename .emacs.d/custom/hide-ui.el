@@ -8,7 +8,6 @@
 
 (setq-default indicate-buffer-boundaries t)
 
-
 (setq inhibit-startup-message t
       confirm-kill-emacs 'yes-or-no-p
       inhibit-startup-message t
@@ -26,19 +25,19 @@
 (setq-default indent-tabs-mode nil)
 (setq whitespace-style
       '(face
-	tabs
-	spaces
-	trailing
-	lines-tail
-	;space-before-tab::space
-	newline
-        indentation
-	empty
-	;space-after-tab::space
-	space-mark
-	tab-mark
-	newline-mark
-	indentation::space))
+       tabs
+       spaces
+       trailing
+       lines-tail
+       ;space-before-tab::space
+       newline
+       indentation
+       empty
+       ;space-after-tab::space
+       space-mark
+       tab-mark
+       newline-mark
+       indentation::space))
 
 (setq face-remapping-alist '((whitespace-tab . whitespace-space-before-tab)))
 
