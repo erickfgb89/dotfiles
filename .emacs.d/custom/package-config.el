@@ -14,7 +14,7 @@
 (mapc
  (lambda (pkg)
    (package-install pkg))
- '(column-marker
+ '(;column-marker
    haskell-mode
    markdown-mode
    markdown-preview-mode
