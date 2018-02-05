@@ -3,8 +3,6 @@
 
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
-(when (< emacs-major-version 24)
-  (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
 
 ;; TODO write time of last update so we only do this on new deploys
 ;; and periodically
@@ -18,9 +16,7 @@
    haskell-mode
    markdown-mode
    markdown-preview-mode
-   neotree
    recentf-ext
-   sr-speedbar
    websocket
    yaml-mode
    sublimity
@@ -28,11 +24,11 @@
    lua-mode
    highlight-chars
    caps-lock
-   ecb
    magit
    enh-ruby-mode
+   sr-speedbar
    projectile
-   ;;flymake-ruby
+   projectile-speedbar
    inf-ruby
    ac-inf-ruby
    robe
@@ -43,6 +39,12 @@
    use-package
    god-mode
    terraform-mode
+   rainbow-delimiters
+   undo-tree
+   mode-icons
+   sx
+   howdoi
+   helm
    elixir-mode))
 
 

@@ -11,7 +11,7 @@
   ;;(cons "2" 'split-window-below)
   ;;(cons "3" 'split-window-right)
   (cons "r" 'ido-recentf-open)
-  (cons "f" 'find-file)
+  ;;(cons "f" 'find-file)
   (cons "s" 'save-buffer)
   (cons "b" 'switch-to-buffer)
   (cons "c" 'caps-lock-mode)
