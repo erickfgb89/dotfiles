@@ -1,38 +1,36 @@
 (require 'shortcuts)
 
-;; (use-package eshell
-;;   :init
-;;   (setenv "PATH"
-;; 	(replace-regexp-in-string "~"
-;; 				  (getenv "HOME")
-;; 				  (concat "~/.rbenv/shims:"
-;; 					  "~/.asdf/shims:"
-;; 					  "~/.asdf/bin:"
-;; 					  "~/.cabal/bin:"
-;; 					  "/usr/local/bin:"
-;; 					  (getenv "PATH"))))
-;;   )
-
-(setenv "PATH"
-	(replace-regexp-in-string "~"
-                                  (getenv "HOME")
-                                  (concat "~/.rbenv/shims:"
-                                          "~/.asdf/shims:"
-                                          "~/.asdf/bin:"
-                                          "~/.cabal/bin:"
-                                          "~/dev/eventer-workstation-utils/bin:"
-                                          "/usr/local/bin:"
-                                          (getenv "PATH"))))
-(setq exec-path
-      (append exec-path
-              (mapcar (lambda (path)
-                        (replace-regexp-in-string "~" (getenv "HOME") path))
-                   '("~/.rbenv/shims"
-                     "~/.asdf/shims"
-                     "~/.asdf/bin"
-                     "~/.cabal/bin"
-                     "~/dev/eventer-workstation-utils/bin"
-                     "/usr/local/bin"))))
+(use-package eshell
+  :config
+  (add-shortcuts
+   '(("e" . select-or-start-eshell)))
+  :init
+  (setenv "PATH"
+          (replace-regexp-in-string
+           "~"
+           (getenv "HOME")
+           (concat "~/.rbenv/shims:"
+                   "~/.asdf/shims:"
+                   "~/.asdf/bin:"
+                   "~/.cabal/bin:"
+                   "~/dev/eventer-workstation-utils/bin:"
+                   "/usr/local/bin:"
+                   "~/Library/Python/3.6/bin:"
+                   (getenv "PATH"))))
+  (setq exec-path
+        (append exec-path
+                (mapcar (lambda (path)
+                          (replace-regexp-in-string
+                           "~"
+                           (getenv "HOME")
+                           path))
+                        '("~/.rbenv/shims"
+                          "~/.asdf/shims"
+                          "~/.asdf/bin"
+                          "~/.cabal/bin"
+                          "~/dev/eventer-workstation-utils/bin"
+                          "~/Library/Python/3.6/bin"
+                          "/usr/local/bin")))))
 
 (defun select-or-start-eshell ()
     "Select visible eshell window or select/create eshell buffer in this window"
@@ -42,8 +40,7 @@
 	   ((get-buffer "*eshell*") (switch-to-buffer "*eshell*"))
 	   (t (eshell)))))
 
-(add-shortcuts (list
-                (cons "e" 'select-or-start-eshell)))
+
 
 
 ;; from https://www.emacswiki.org/emacs/EshellBmk

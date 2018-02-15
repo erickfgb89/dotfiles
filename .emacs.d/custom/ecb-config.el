@@ -28,4 +28,9 @@
 	      ecb-show-sources-in-directories-buffer 'always
 	      auto-expand-directory-tree 'best
 	      ecb-eshell-enlarge-when-eshell nil
-	      ecb-tip-of-the-day nil))
+	      ecb-tip-of-the-day nil)
+             (add-shortcuts
+              '(("t d" . ecb-goto-window-directories)
+                ("t s" . ecb-goto-window-sources)
+                ("t h" . ecb-goto-window-history)
+                ("t m" . ecb-goto-window-methods))))

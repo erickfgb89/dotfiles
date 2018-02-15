@@ -4,6 +4,9 @@
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
 
+;; https://github.com/jwiegley/use-package
+(setq use-package-always-ensure t)
+
 ;; TODO write time of last update so we only do this on new deploys
 ;; and periodically
 ;;(package-refresh-contents)
