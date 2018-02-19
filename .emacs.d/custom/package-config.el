@@ -12,43 +12,43 @@
 ;;(package-refresh-contents)
 
 ;;installed packages
-(mapc
- (lambda (pkg)
-   (package-install pkg))
- '(;column-marker
-   haskell-mode
-   markdown-mode
-   markdown-preview-mode
-   recentf-ext
-   websocket
-   yaml-mode
-   sublimity
-   workgroups2
-   lua-mode
-   highlight-chars
-   caps-lock
-   magit
-   enh-ruby-mode
-   sr-speedbar
-   projectile
-   projectile-speedbar
-   inf-ruby
-   ac-inf-ruby
-   robe
-   groovy-mode
-   color-theme-solarized
-   company-inf-ruby
-   restclient
-   use-package
-   god-mode
-   terraform-mode
-   rainbow-delimiters
-   undo-tree
-   mode-icons
-   sx
-   howdoi
-   helm
-   elixir-mode))
+;; (mapc
+;;  (lambda (pkg)
+;;    (package-install pkg))
+;;  '(;column-marker
+;;    haskell-mode
+;;    markdown-mode
+;;    markdown-preview-mode
+;;    recentf-ext
+;;    websocket
+;;    yaml-mode
+;;    sublimity
+;;    workgroups2
+;;    lua-mode
+;;    highlight-chars
+;;    caps-lock
+;;    magit
+;;    enh-ruby-mode
+;;    sr-speedbar
+;;    projectile
+;;    projectile-speedbar
+;;    inf-ruby
+;;    ac-inf-ruby
+;;    robe
+;;    groovy-mode
+;;    color-theme-solarized
+;;    company-inf-ruby
+;;    restclient
+;;    use-package
+;;    god-mode
+;;    terraform-mode
+;;    rainbow-delimiters
+;;    undo-tree
+;;    mode-icons
+;;    sx
+;;    howdoi
+;;    helm
+;;    elixir-mode))
 
 
 ;;sublimity

@@ -16,6 +16,7 @@
                    "~/dev/eventer-workstation-utils/bin:"
                    "/usr/local/bin:"
                    "~/Library/Python/3.6/bin:"
+                   "~/.local/bin:"
                    (getenv "PATH"))))
   (setq exec-path
         (append exec-path
@@ -30,6 +31,7 @@
                           "~/.cabal/bin"
                           "~/dev/eventer-workstation-utils/bin"
                           "~/Library/Python/3.6/bin"
+                          "~/.local/bin"
                           "/usr/local/bin")))))
 
 (defun select-or-start-eshell ()
