@@ -5,7 +5,6 @@
   (cons "o" 'other-window)
   (cons "k" 'kill-this-buffer)
   (cons "s" 'save-buffer)
-  (cons "c" 'caps-lock-mode)
   (cons "x" 'kmacro-end-or-call-macro)
   (cons "r" 'repeat)
   (cons "p s" 'sr-speedbar-select-window)

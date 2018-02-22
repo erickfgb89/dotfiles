@@ -6,10 +6,6 @@
 (if (fboundp 'global-font-lock-mode)
     (global-font-lock-mode 1))
 
-(setq frame-background-mode 'dark)
-(load-theme 'solarized t)
-(enable-theme 'solarized)
-
 ;;(set-default-font "DejaVu Sans Mono-10")
 (set-default-font "Inconsolata-12")
 
