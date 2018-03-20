@@ -15,7 +15,7 @@
 (use-package helm-projectile
   :config
   (add-shortcuts
-   '(("p p" . helm-projectile-switch-to-project)
+   '(("p p" . helm-projectile-switch-project)
      ("p b" . helm-projectile-switch-to-buffer)
      ("p g" . helm-projectile-grep)
      ("p f" . helm-projectile-find-file)
