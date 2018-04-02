@@ -42,8 +42,21 @@
 	   ((get-buffer "*eshell*") (switch-to-buffer "*eshell*"))
 	   (t (eshell)))))
 
-
-
+(setq eshell-prompt-function
+     (lambda ()
+       (concat
+        (propertize "┌─[" 'face `(:foreground "green"))
+        (propertize (concat (eshell/pwd)) 'face `(:foreground "white"))
+        (propertize "@" 'face `(:foreground "green"))
+        (if (magit-get-current-branch)
+            (propertize (magit-get-current-branch) 'face `(:foreground "yellow"))
+            (propertize "z" 'face `(:foreground "yellow")))
+        (propertize "]──[" 'face `(:foreground "green"))
+        (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "yellow"))
+        (propertize "]\n" 'face `(:foreground "green"))
+        (propertize "└─>" 'face `(:foreground "green"))
+        (propertize (if (= (user-uid) 0) " # " " $ ") 'face `(:foreground "green"))
+        )))
 
 ;; from https://www.emacswiki.org/emacs/EshellBmk
 ;; eshell/bmk - version 0.1.3
