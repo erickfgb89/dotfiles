@@ -53,9 +53,24 @@
             (propertize "z" 'face `(:foreground "yellow")))
         (propertize "]──[" 'face `(:foreground "green"))
         (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "yellow"))
-        (propertize "]\n" 'face `(:foreground "green"))
+        (propertize "]" 'face `(:foreground "green"))
+        (if (member (car (split-string (symbol-name (projectile-project-type))
+                                       "-"))
+                    '(rails ruby))
+            (concat
+             (propertize "──[" 'face `(:foreground "green"))
+             (propertize (car
+                          (split-string
+                           (shell-command-to-string "rbenv version")
+                           " "))
+                         'face
+                         `(:foreground "yellow"))
+             (propertize "]" 'face `(:foreground "green")))
+          "")
+        "\n"
         (propertize "└─>" 'face `(:foreground "green"))
-        (propertize (if (= (user-uid) 0) " # " " $ ") 'face `(:foreground "green"))
+        (propertize (if (= (user-uid) 0) " #" " $") 'face `(:foreground "green"))
+        " "
         )))
 
 ;; from https://www.emacswiki.org/emacs/EshellBmk
