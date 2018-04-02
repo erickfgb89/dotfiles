@@ -43,35 +43,38 @@
 	   (t (eshell)))))
 
 (setq eshell-prompt-function
-     (lambda ()
+      (lambda ()
+        (let ((frame 'eshell-prompt)
+              (path 'eshell-ls-directory)
+              (vcs 'eshell-ls-readonly)
+              (data 'dired-ignored))
        (concat
-        (propertize "┌─[" 'face `(:foreground "green"))
-        (propertize (concat (eshell/pwd)) 'face `(:foreground "white"))
-        (propertize "@" 'face `(:foreground "green"))
+        (propertize "┌─[" 'face 'eshell-prompt)
+        (propertize (concat (eshell/pwd)) 'face path)
+        (propertize "@" 'face frame)
         (if (magit-get-current-branch)
-            (propertize (magit-get-current-branch) 'face `(:foreground "yellow"))
-            (propertize "z" 'face `(:foreground "yellow")))
-        (propertize "]──[" 'face `(:foreground "green"))
-        (propertize (format-time-string "%H:%M" (current-time)) 'face `(:foreground "yellow"))
-        (propertize "]" 'face `(:foreground "green"))
-        (if (member (car (split-string (symbol-name (projectile-project-type))
-                                       "-"))
-                    '(rails ruby))
-            (concat
-             (propertize "──[" 'face `(:foreground "green"))
-             (propertize (car
-                          (split-string
-                           (shell-command-to-string "rbenv version")
-                           " "))
-                         'face
-                         `(:foreground "yellow"))
-             (propertize "]" 'face `(:foreground "green")))
-          "")
+            (propertize (magit-get-current-branch) 'face vcs)
+            (propertize "z" 'face vcs))
+        (propertize "]──[" 'face frame)
+        (propertize (format-time-string "%H:%M" (current-time)) 'face data)
+        (propertize "]" 'face frame)
+        (if (member (car
+                     (split-string
+                      (symbol-name (projectile-project-type)) "-"))
+                    '("rails" "ruby"))
+            (let ((v (shell-command-to-string "rbenv version")))
+              (string-match
+               "\\([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\\)" v)
+              (concat
+               (propertize "──[" 'face frame)
+               (propertize (match-string 1 v)
+                           'face data)
+               (propertize "]" 'face frame))))
         "\n"
-        (propertize "└─>" 'face `(:foreground "green"))
-        (propertize (if (= (user-uid) 0) " #" " $") 'face `(:foreground "green"))
+        (propertize "└─>" 'face frame)
+        (propertize (if (= (user-uid) 0) " #" " $") 'face frame)
         " "
-        )))
+        ))))
 
 ;; from https://www.emacswiki.org/emacs/EshellBmk
 ;; eshell/bmk - version 0.1.3

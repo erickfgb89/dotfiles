@@ -5,8 +5,11 @@
 (show-paren-mode 1)
 (column-number-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
+;; whitespace
+(global-whitespace-mode 1)
 
-(setq-default indicate-buffer-boundaries t)
+(setq-default indicate-buffer-boundaries t
+              indent-tabs-mode nil)
 
 (setq inhibit-startup-message t
       confirm-kill-emacs 'yes-or-no-p
@@ -18,29 +21,24 @@
       x-select-enable-clipboard t
       visible-bell 1
       set-mark-command-repeat-pop 1
-      require-final-newline t)
-
-;; whitespace
-(global-whitespace-mode 1)
-(setq-default indent-tabs-mode nil)
-(setq whitespace-style
-      '(face
-       tabs
-       spaces
-       trailing
-       lines-tail
-       ;space-before-tab::space
-       newline
-       indentation
-       empty
-       ;space-after-tab::space
-       space-mark
-       tab-mark
-       newline-mark
-       indentation::space))
-
-(setq face-remapping-alist '((whitespace-tab . whitespace-space-before-tab)))
-
-
-(setq sh-basic-offset 2
-        sh-indentation 2)
+      require-final-newline t
+      whitespace-style '(face
+                         tabs
+                         spaces
+                         trailing
+                         lines-tail
+                         ;;space-before-tab::space
+                         newline
+                         indentation
+                         empty
+                         ;;space-after-tab::space
+                         space-mark
+                         tab-mark
+                         newline-mark
+                         indentation::space)
+      face-remapping-alist '((whitespace-tab . whitespace-space-before-tab))
+      sh-basic-offset 2
+      sh-indentation 2
+      js-indent-level 2
+      groovy-indent-offset 2
+      standard-indent 2)
