@@ -15,6 +15,3 @@
       (message "Opening file...")
     (message "Aborting")))
 
-
-
- 
