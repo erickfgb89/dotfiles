@@ -2,5 +2,8 @@
 ;;  :init
 (org-babel-do-load-languages
  'org-babel-load-languages
- '(( ruby . t )))
+ '(( ruby . t )
+   ( sh . t )))
 ;;)
+
+;; node: use <sTAB to insert BEGIN_SRC block
