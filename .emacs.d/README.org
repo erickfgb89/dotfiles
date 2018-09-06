@@ -80,11 +80,11 @@
                     ( shell . t ))))
      #+END_SRC
 ***** Editing
-     Use ~C-c '~ to edit code in its native mode in a separate buffer
+     Use ~(C-c ')~ to edit code in its native mode in a separate buffer
      This will trash the current window config
 ***** Window config undo
       Use ~winner-undo~ (C-c LEFT) to restore your previous configuration after
-      calling ~org-edit-special~ (C-c ')
+      calling ~org-edit-special~ ~(C-c ')~
 *** Winner
     Undo and redo window configuration changes
     #+BEGIN_SRC emacs-lisp
