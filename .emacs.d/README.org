@@ -1,0 +1,333 @@
+* My Emacs Config
+** Platform Predicates
+   Predicates we'll use later for options that only apply
+   to specific configurations
+
+   #+BEGIN_SRC emacs-lisp
+   (defun osx-p ()
+     "Check whether we're running OSX"
+     (eq system-type 'darwin))
+
+   (defun linux-p ()
+     "Check whether we're running linux"
+     (eq system-type 'gnu/linux))
+   #+END_SRC
+*** Graphical vs Terminal
+    I was going to write a predicate to check for a graphical
+    interface, but then I discovered `display-graphic-p`
+** libraries
+*** shortcuts
+    Small library for adding keybindings with several prefixes at once
+
+    I have an easier time hitting a keybinding with two specials and one letter
+    rather than a `C-x y` or `C-x C-y`
+
+    I find that C-M-[x] seems to be bound to something a lot of the time,
+    but C-S-[x] is usually free. This is probably because C-S-[x] isn't well
+    supported in the world of terminals, which makes it useless when we don't
+    have a graphical environment handy.
+
+    I use this library to create bindings with both C-S-[x] and C-c [x], so
+    I can keep my convenience bindings with a less convenient C-c prefix.
+
+    Someday, I'll learn to use super and hyper, and I'll finally get away from
+    this mess.
+    #+BEGIN_SRC emacs-lisp
+      (load "~/.emacs.d/custom/lib/shortcuts")
+    #+END_SRC
+
+** use-package
+   Load up use-package, which we'll use to load all other packages
+   #+BEGIN_SRC emacs-lisp
+   (package-initialize)
+   (eval-when-compile
+     (require 'use-package))
+   (require 'bind-key)
+   #+END_SRC
+** Disabled Functions
+   A bunch of stuff is disabled by default because it's
+   too scary to use. There are a few I like to use pretty regularly,
+   so I re-enable them here
+   | M-l     | downcase-word    |
+   | M-u     | upcase-word      |
+   | M-c     | capitalize-word  |
+   | C-x C-l | downcase-region  |
+   | C-x C-u | upcase-region    |
+   | C-x C-n | set-goal-column  |
+   | C-x n n | narrow-to-region |
+   |         |                  |
+   #+BEGIN_SRC emacs-lisp
+     (put 'downcase-word 'disabled nil) ; M-l
+     (put 'upcase-word 'disabled nil) ; M-u
+     (put 'capitalize-word 'disabled nil) ; M-c
+     (put 'downcase-region 'disabled nil) ; C-x C-l
+     (put 'upcase-region 'disabled nil) ; C-x C-u
+     (put 'set-goal-column 'disabled nil) ; C-x C-n
+     (put 'narrow-to-region 'disabled nil) ; C-x n n
+
+   #+END_SRC
+** packages
+*** org-mode
+**** SRC blocks
+     /Note/: Use <s TAB to insert src block (see [[https://orgmode.org/manual/Easy-templates.html][easy templates]])
+     #+BEGIN_SRC emacs-lisp
+;:bind (([remap org-return] . org-return-indent))))
+       (use-package org
+         :init (setq org-src-tab-acts-natively t)
+         :config (org-babel-do-load-languages
+                  'org-babel-load-languages
+                  '(( ruby . t )
+                    ( shell . t ))))
+     #+END_SRC
+***** Editing
+     Use `C-c '` to edit code in its native mode in a separate buffer
+     This will trash the current window config
+***** Window config undo
+      Use `winner-undo` (C-c LEFT) to restore your previous configuration after
+      calling `org-edit-special` (C-c ')
+*** Winner
+    Undo and redo window configuration changes
+    #+BEGIN_SRC emacs-lisp
+      (use-package winner
+        :hook (org-mode . winner-mode))
+    #+END_SRC
+*** abbrev
+    use snippets to insert common text
+    #+BEGIN_SRC emacs-lisp
+      (use-package abbrev
+        :ensure f
+        :init
+        (setq abbrev-file-name "~/.emacs.d/abbrev_defs"
+              default-abbrev-mode t
+              save-abbrevs t)
+        (setq-default abbrev-mode t))
+    #+END_SRC
+*** ace-jump-mode
+    Use a hotkey to jump to a word based on its starting character
+    #+BEGIN_SRC emacs-lisp
+      (use-package ace-jump-mode
+        :config
+        (add-shortcuts
+         '(("j" . ace-jump-word-mode))))
+    #+END_SRC
+*** aggressive-indent
+    Force proper indentation for selected modes
+    #+BEGIN_SRC emacs-lisp
+      (use-package aggressive-indent
+                   :mode ( "\\.rb\\'" "\\.hs\\'" "\\.lhs\\'"
+                           "\\.yml\\'" "\\.yaml\\'" "\\.java\\'"
+                           "\\.js\\'" "\\.sh\\'" "\\.py\\'" )
+                   :config
+                   (aggressive-indent-mode))
+    #+END_SRC
+*** caps-lock-mode
+    Get caps-lock using an emacs keybinding, because I
+    remapped caps lock to Ctrl
+    #+BEGIN_SRC emacs-lisp
+      (use-package caps-lock
+        :init
+        (add-shortcuts
+         '(("c" . caps-lock-mode))))
+    #+END_SRC
+*** eshell
+    I've been using eshell instead of shell or term but I modify my path
+    in both the PATH environment variable and `exec-path`.
+    If I remember correctly, one works for eshell and the other
+    for emulated shells.
+    #+BEGIN_SRC emacs-lisp
+      (use-package eshell
+        :config
+        (add-shortcuts
+         '(("e" . select-or-start-eshell)))
+        :init
+        (setenv "PATH"
+                (replace-regexp-in-string
+                 "~"
+                 (getenv "HOME")
+                 (concat "~/.rbenv/shims:"
+                         "~/.asdf/shims:"
+                         "~/.asdf/bin:"
+                         "~/.cabal/bin:"
+                         "~/dev/eventer-workstation-utils/bin:"
+                         "/usr/local/bin:"
+                         "~/Library/Python/3.6/bin:"
+                         "~/.local/bin:"
+                         (getenv "PATH"))))
+        (setq exec-path
+              (append exec-path
+                      (mapcar (lambda (path)
+                                (replace-regexp-in-string
+                                 "~"
+                                 (getenv "HOME")
+                                 path))
+                              '("~/.rbenv/shims"
+                                "~/.asdf/shims"
+                                "~/.asdf/bin"
+                                "~/.cabal/bin"
+                                "~/dev/eventer-workstation-utils/bin"
+                                "~/Library/Python/3.6/bin"
+                                "~/.local/bin"
+                                "/usr/local/bin")))))
+    #+END_SRC
+**** TODO executables [0/4]
+     - [ ] eventer-workstation-utils
+       work stuff. I need to turn this into symlinks in ~/bin
+     - [ ] ~/.local/bin
+       No idea why this is here. I tend to use ~/bin
+     - [ ]  /usr/local/bin
+       osx - specific. need to rewrite this with the platform predicates
+     - [ ] python3
+       for running python3 when 2.7 and 3.6 are installed together in 
+       os x
+     | [[https://github.com/rbenv/rbenv][rbenv]] | Ruby version manager    |
+     | [[https://github.com/asdf-vm/asdf][asdf]]  | version manager         |
+     | [[https://www.haskell.org/cabal/][cabal]] | Haskell package manager |
+**** bmk function
+     jump to bookmarks from eshell
+     #+BEGIN_SRC emacs-lisp
+       ;; from https://www.emacswiki.org/emacs/EshellBmk
+       ;; eshell/bmk - version 0.1.3
+
+       (defun pcomplete/eshell-mode/bmk ()
+         "Completion for `bmk'"
+         (pcomplete-here (bookmark-all-names)))
+
+       (defun eshell/bmk (&rest args)
+         "Integration between EShell and bookmarks.
+       For usage, execute without arguments."
+         (setq args (eshell-flatten-list args))
+         (let ((bookmark (car args))
+               filename name)
+           (cond
+            ((eq nil args)
+             (format "Usage:
+       ,* bmk BOOKMARK to
+       ,** either change directory pointed to by BOOKMARK
+       ,** or bookmark-jump to the BOOKMARK if it is not a directory.
+       ,* bmk . BOOKMARK to bookmark current directory in BOOKMARK.
+       Completion is available."))
+            ((string= "." bookmark)
+             ;; Store current path in EShell as a bookmark
+             (if (setq name (car (cdr args)))
+                 (progn
+                   (bookmark-set name)
+                   (bookmark-set-filename name (eshell/pwd))
+                   (format "Saved current directory in bookmark %s" name))
+               (error "You must enter a bookmark name")))
+            (t
+              ;; Check whether an existing bookmark has been specified
+              (if (setq filename (bookmark-get-filename bookmark))
+                  ;; If it points to a directory, change to it.
+                  (if (file-directory-p filename)
+                      (eshell/cd filename)
+                    ;; otherwise, just jump to the bookmark 
+                    (bookmark-jump bookmark))
+                (error "%s is not a bookmark" bookmark))))))
+
+       ;; end eshell/bmk
+     #+END_SRC
+**** Select existing eshell buffer
+     Switch to eshell buffer instead of creating a duplicate eshell
+     buffer if one already exists in the current window arrangement
+     #+BEGIN_SRC emacs-lisp
+       (defun select-or-start-eshell ()
+           "Select visible eshell window or select/create eshell buffer in this window"
+         (interactive)
+          (let ((e-win (get-buffer-window "*eshell*")))
+            (cond (e-win (select-window e-win))
+                  ((get-buffer "*eshell*") (switch-to-buffer "*eshell*"))
+                  (t (eshell)))))
+     #+END_SRC
+**** Eshell prompt
+     #+BEGIN_SRC emacs-lisp
+       (setq eshell-prompt-function
+             (lambda ()
+               (let ((frame 'eshell-prompt)
+                     (path 'eshell-ls-directory)
+                     (vcs 'eshell-ls-readonly)
+                     (data 'dired-ignored)
+                     (err 'dired-warning))
+              (concat
+               (propertize "┌─[" 'face 'eshell-prompt)
+               (propertize (concat (eshell/pwd)) 'face path)
+               (propertize "@" 'face frame)
+               (if (magit-get-current-branch)
+                   (propertize (magit-get-current-branch) 'face vcs)
+                   (propertize "z" 'face vcs))
+               (propertize "]──[" 'face frame)
+               (propertize (format-time-string "%H:%M" (current-time)) 'face data)
+               (propertize "]" 'face frame)
+               (if (member (car
+                            (split-string
+                             (symbol-name (projectile-project-type)) "-"))
+                           '("rails" "ruby"))
+                   (let ((v (shell-command-to-string "rbenv version")))
+                     (string-match
+                      "\\([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\\)" v)
+                     (concat
+                      (propertize "──[" 'face frame)
+                      (propertize (match-string 1 v)
+                                  'face data)
+                      (propertize "]" 'face frame))))
+               (if (not (eq 0 eshell-last-command-status))
+                   (concat
+                    (propertize "──[" 'face frame)
+                    (propertize (number-to-string
+                                 eshell-last-command-status)
+                                'face err)
+                    (propertize "]" 'face frame)))
+               "\n"
+               (propertize "└─>" 'face frame)
+               (propertize (if (= (user-uid) 0) " #" " $") 'face frame)
+               " "
+               ))))
+     #+END_SRC
+** TODO incorporate and remove from list
+   #+BEGIN_SRC emacs-lisp
+     ;(load "~/.emacs.d/custom/ace-jump-mode")
+     ;(load "~/.emacs.d/custom/aggressive-indent")
+     (load "~/.emacs.d/custom/backup-files")
+     ;(load "~/.emacs.d/custom/caps-lock")
+     (load "~/.emacs.d/custom/custom-faces")
+     (load "~/.emacs.d/custom/ecb-config.el")
+     ;(load "~/.emacs.d/custom/enable-functions.el")
+     ;(load "~/.emacs.d/custom/eshell-custom.el")
+     (load "~/.emacs.d/custom/god-mode.el")
+     (load "~/.emacs.d/custom/groovy-mode.el")
+     (load "~/.emacs.d/custom/haskell.el")
+     (load "~/.emacs.d/custom/helm.el")
+     (load "~/.emacs.d/custom/hide-ui.el")
+     (load "~/.emacs.d/custom/highlights.el")
+     (load "~/.emacs.d/custom/indents.el")
+     (load "~/.emacs.d/custom/js-mode.el")
+     (load "~/.emacs.d/custom/just-for-fun.el")
+     (load "~/.emacs.d/custom/list-gen.el")
+     (load "~/.emacs.d/custom/macros.el")
+     (load "~/.emacs.d/custom/magit.el")
+     (load "~/.emacs.d/custom/manheim.el")
+     (load "~/.emacs.d/custom/margin-of-shame.el")
+     (load "~/.emacs.d/custom/markdown-mode.el")
+     (load "~/.emacs.d/custom/mode-icons.el")
+     (load "~/.emacs.d/custom/on-startup.el")
+     (load "~/.emacs.d/custom/org.el")
+     (load "~/.emacs.d/custom/package-config.el")
+     (load "~/.emacs.d/custom/pacman.el")
+     (load "~/.emacs.d/custom/pollen-mode.el")
+     (load "~/.emacs.d/custom/projectile.el")
+     (load "~/.emacs.d/custom/python-mode.el")
+     (load "~/.emacs.d/custom/racket-mode.el")
+     (load "~/.emacs.d/custom/rainbow-delimiters.el")
+     (load "~/.emacs.d/custom/recent.el")
+     (load "~/.emacs.d/custom/ruby-rake-printer.el")
+     (load "~/.emacs.d/custom/ruby.el")
+     (load "~/.emacs.d/custom/shortcuts.el")
+     (load "~/.emacs.d/custom/solarized.el")
+     (load "~/.emacs.d/custom/speedbar-opt.el")
+     (load "~/.emacs.d/custom/stackexchange.el")
+     (load "~/.emacs.d/custom/text-comments.el")
+     (load "~/.emacs.d/custom/undo-tree.el")
+     (load "~/.emacs.d/custom/workgroups.el")
+     (load "~/.emacs.d/custom/yaml.el")
+     (load "~/.emacs.d/custom/zsh.el")
+     (load "~/.emacs.d/custom/zz-init.el")
+   #+END_SRC
