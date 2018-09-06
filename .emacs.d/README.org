@@ -14,13 +14,13 @@
    #+END_SRC
 *** Graphical vs Terminal
     I was going to write a predicate to check for a graphical
-    interface, but then I discovered `display-graphic-p`
+    interface, but then I discovered ~display-graphic-p~
 ** libraries
 *** shortcuts
     Small library for adding keybindings with several prefixes at once
 
     I have an easier time hitting a keybinding with two specials and one letter
-    rather than a `C-x y` or `C-x C-y`
+    rather than a ~C-x y~ or ~C-x C-y~
 
     I find that C-M-[x] seems to be bound to something a lot of the time,
     but C-S-[x] is usually free. This is probably because C-S-[x] isn't well
@@ -80,11 +80,11 @@
                     ( shell . t ))))
      #+END_SRC
 ***** Editing
-     Use `C-c '` to edit code in its native mode in a separate buffer
+     Use ~C-c '~ to edit code in its native mode in a separate buffer
      This will trash the current window config
 ***** Window config undo
-      Use `winner-undo` (C-c LEFT) to restore your previous configuration after
-      calling `org-edit-special` (C-c ')
+      Use ~winner-undo~ (C-c LEFT) to restore your previous configuration after
+      calling ~org-edit-special~ (C-c ')
 *** Winner
     Undo and redo window configuration changes
     #+BEGIN_SRC emacs-lisp
@@ -131,7 +131,7 @@
     #+END_SRC
 *** eshell
     I've been using eshell instead of shell or term but I modify my path
-    in both the PATH environment variable and `exec-path`.
+    in both the PATH environment variable and ~exec-path~.
     If I remember correctly, one works for eshell and the other
     for emulated shells.
     #+BEGIN_SRC emacs-lisp
