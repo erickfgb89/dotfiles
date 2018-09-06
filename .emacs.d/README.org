@@ -239,8 +239,10 @@
                   (t (eshell)))))
      #+END_SRC
 **** Eshell prompt
-=┌─[/path/to/cwd@branch]──[07:47]──[ruby-version]
-└─> $ =
+#+BEGIN_EXAMPLE
+┌─[/path/to/cwd@branch]──[07:47]──[ruby-version]
+└─> $
+#+END_EXAMPLE
      #+BEGIN_SRC emacs-lisp
        (setq eshell-prompt-function
              (lambda ()
