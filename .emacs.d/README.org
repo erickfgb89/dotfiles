@@ -115,21 +115,57 @@
                               newline-mark
                               indentation::space)
            face-remapping-alist '((whitespace-tab . whitespace-space-before-tab))
-           ;; backups
-           backup-by-copying t
-           backup-directory-alist
-           `((".*" . ,temporary-file-directory))
-           auto-save-file-name-transforms
-           `((".*" ,temporary-file-directory t))
-           delete-old-versions t
-           kept-new-versions 6
-           kept-old-versions 2
-           version-control t
            ;; use-package
            use-package-always-ensure t
            sh-basic-offset 2
            sh-indentation 2
            standard-indent 2)
+
+   #+END_SRC
+** Misc. Bindings
+   #+BEGIN_SRC emacs-lisp
+     (add-shortcuts
+      (list
+       (cons "o" 'other-window)
+       (cons "k" 'kill-this-buffer)
+       (cons "s" 'save-buffer)
+       (cons "x" 'kmacro-end-or-call-macro)
+       (cons "p s" 'sr-speedbar-select-window)
+       ;(cons "f" 'find-file) ;replaced by helm
+       ;(cons "b" 'switch-to-buffer) ;replaced by helm
+       )
+      )
+
+     (global-set-key (kbd "C-#") 'comment-or-uncomment-region)
+     (global-set-key (kbd "M-g") 'goto-line)
+     (global-set-key (kbd "RET") 'newline-and-indent)
+     (global-set-key (kbd "C-z") 'god-mode)
+   #+END_SRC
+** TODO Backup files
+   I'm pretty sure my backup config doesn't work the way I think it does
+   #+BEGIN_SRC emacs-lisp
+     ;; delete old backups
+     (message "Deleting old backup files")
+     (let ((week (* 60 60 24 7))
+           (current (float-time (current-time))))
+       (dolist (file (directory-files temporary-file-directory t))
+         (when (and (backup-file-name-p file)
+                    (> (- current (float-time (nth 5 (file-attributes file))))
+                       week))
+           (message "%s" file)
+           (delete-file file))))
+
+     (setq
+      backup-by-copying t
+      backup-directory-alist
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t))
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)
+
 
    #+END_SRC
 ** packages
@@ -471,15 +507,7 @@
     #+END_SRC
 *** recentf
     #+BEGIN_SRC emacs-lisp
-      (require 'recentf)
-
       ;; Mostly from: https://masteringemacs.org/article/find-files-faster-recent-files-package
-
-      ;; enable recent files
-      (recentf-mode t)
-
-      ;; limit to 50 for now
-      (setq recentf-max-saved-items 50)
 
       (defun ido-recentf-open ()
         "Use `ido-completing-read' to \\[find-file] a recent file"
@@ -490,55 +518,163 @@
 
       (use-package recentf
         :init (setq recentf-max-saved-items 50)
-        :config (recentf-mode t)
-  
+        :config
+        (recentf-mode t)
+        (add-shortcuts '(("r" . ido-recentf-open))))
     #+END_SRC
-** TODO incorporate and remove from list
-   #+BEGIN_SRC emacs-lisp
-     ;(load "~/.emacs.d/custom/ace-jump-mode")
-     ;(load "~/.emacs.d/custom/aggressive-indent")
-     (load "~/.emacs.d/custom/backup-files")
-     ;(load "~/.emacs.d/custom/caps-lock")
-     (load "~/.emacs.d/custom/custom-faces")
-     (load "~/.emacs.d/custom/ecb-config.el")
-     ;(load "~/.emacs.d/custom/enable-functions.el")
-     ;(load "~/.emacs.d/custom/eshell-custom.el")
-     ;(load "~/.emacs.d/custom/god-mode.el")
-     ;(load "~/.emacs.d/custom/groovy-mode.el")
-     ;(load "~/.emacs.d/custom/haskell.el")
-     ;(load "~/.emacs.d/custom/helm.el")
-     ;(load "~/.emacs.d/custom/hide-ui.el")
-     ;(load "~/.emacs.d/custom/highlights.el")
-     ;(load "~/.emacs.d/custom/indents.el")
-     ;(load "~/.emacs.d/custom/js-mode.el")
-     ;(load "~/.emacs.d/custom/just-for-fun.el")
-     ;(load "~/.emacs.d/custom/list-gen.el")
-     ;(load "~/.emacs.d/custom/macros.el")
-     ;(load "~/.emacs.d/custom/magit.el")
-     ;(load "~/.emacs.d/custom/manheim.el")
-     ;(load "~/.emacs.d/custom/margin-of-shame.el")
-     ;(load "~/.emacs.d/custom/markdown-mode.el")
-     ;(load "~/.emacs.d/custom/mode-icons.el")
-     ;(load "~/.emacs.d/custom/on-startup.el")
-     ;(load "~/.emacs.d/custom/org.el")
-     ;(load "~/.emacs.d/custom/package-config.el")
-     ;(load "~/.emacs.d/custom/pacman.el")
-     ;(load "~/.emacs.d/custom/pollen-mode.el")
-     ;(load "~/.emacs.d/custom/projectile.el")
-     ;(load "~/.emacs.d/custom/python-mode.el")
-     ;(load "~/.emacs.d/custom/racket-mode.el")
-     ;(load "~/.emacs.d/custom/rainbow-delimiters.el")
-     ;(load "~/.emacs.d/custom/recent.el")
-     ;(load "~/.emacs.d/custom/ruby-rake-printer.el")
-     (load "~/.emacs.d/custom/ruby.el")
-     (load "~/.emacs.d/custom/shortcuts.el")
-     (load "~/.emacs.d/custom/solarized.el")
-     (load "~/.emacs.d/custom/speedbar-opt.el")
-     (load "~/.emacs.d/custom/stackexchange.el")
-     (load "~/.emacs.d/custom/text-comments.el")
-     (load "~/.emacs.d/custom/undo-tree.el")
-     (load "~/.emacs.d/custom/workgroups.el")
-     (load "~/.emacs.d/custom/yaml.el")
-     (load "~/.emacs.d/custom/zsh.el")
-     (load "~/.emacs.d/custom/zz-init.el")
-   #+END_SRC
+*** ruby
+    #+BEGIN_SRC emacs-lisp
+      (use-package ruby-mode
+        :mode "\\.rb\\'"
+        :config
+        (setq rbenv-installation-dir "/usr/local/bin/")
+        (defadvice inf-ruby-console-auto (before activate-rbenv-for-robe activate)
+          (rbenv-use-corresponding))
+        (when (eq system-type 'darwin)
+          (setq projectile-tags-command "/usr/local/bin/ctags -Re -f \"%s\" %s"))
+        :init
+        (add-hook 'ruby-mode-hook 'robe-mode)
+        (add-hook 'robe-mode-hook 'ac-robe-setup)
+        (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+        (add-hook 'ruby-mode-hook 'company-mode)
+        (eval-after-load 'company
+          '(push 'company-robe company-backends)))
+    #+END_SRC
+*** solarized
+    Color scheme I picked up at work and use everywhere I go.
+    [[https://ethanschoonover.com/solarized/][Check it out!]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package solarized-theme
+        :config
+        (load-theme 'solarized t)
+        (enable-theme 'solarized)
+        :init
+        (setq frame-background-mode 'dark))
+    #+END_SRC
+*** sr-speedbar
+    I only use one frame, so I use sr-speedbar to keep it
+    tacked on.
+    I've been taking a break from this thing for a while.
+    It's awesome, but I have a hard time breaking my flow
+    to hit a persistent window to find a method or whatever.
+    #+BEGIN_SRC emacs-lisp
+      ;;; For other options
+      ;;; https://www.emacswiki.org/emacs/SrSpeedbar
+
+      (use-package sr-speedbar
+        :disabled
+        :init
+        (setq
+         sr-speedbar-skip-other-window-p t
+         speedbar-directory-unshown-regexp "^\\.git$"
+         speedbar-show-unknown-files t
+         sr-speedbar-width-x 50
+         sr-speedbar-max-width 50
+         sr-speedbar-default-width 50)
+        :config
+        (speedbar-add-supported-extension
+         (list ".rb"
+               "Rakefile"
+               ".sh"))
+        (set-process-sentinel
+         (start-process "sleep" "*sleep*" "sleep" "2" )
+         'open-speedbar))
+    #+END_SRC
+*** stackexchange
+    Dig up solutions on stack exchange from emacs
+    #+BEGIN_SRC emacs-lisp
+      (use-package sx)
+
+      (use-package howdoi)
+    #+END_SRC
+*** undo-tree
+    I very very rarely find myself in the middle of a weird, branching
+    undo tree, but when I do, this definitely comes in handy.
+    #+BEGIN_SRC emacs-lisp
+      ;; https://cestlaz.github.io/posts/using-emacs-16-undo-tree/
+      (use-package undo-tree
+        :ensure t
+        :init
+        (global-undo-tree-mode))
+    #+END_SRC
+*** workgroups
+    The best way I've found to context-switch when something comes up.
+    #+BEGIN_SRC emacs-lisp
+      (use-package workgroups2
+        :config
+        (setq wg-emacs-exit-save-behavior nil             ; Options: 'save 'ask nil
+              wg-workgroups-mode-exit-save-behavior nil   ; Options: 'save 'ask nil
+              wg-mode-line-display-on t                   ; Default: (not (featurep 'powerline))
+              wg-flag-modified t                          ; Display modified flags as well
+              wg-mode-line-decor-left-brace "["
+              wg-mode-line-decor-right-brace "]"          ; how to surround it
+              wg-mode-line-decor-divider ":")
+        (add-shortcuts
+         '(("w i" . workgroups-mode)
+           ("w c" . wg-create-workgroup)
+           ("w o" . wg-switch-to-workgroup)
+           ("w k" . wg-kill-workgroup)
+           ("w w" . wg-kill-workgroup-and-buffers))))
+    #+END_SRC
+*** yaml
+    Including ~.yml~ and ~.yml.erb~
+    #+BEGIN_SRC emacs-lisp
+      (use-package yaml-mode
+        :mode "\\.yml\\'"
+        :mode "\\.yml\\.erb\\'" )
+    #+END_SRC
+*** zsh
+    I use zsh outside of emacs, and any time I run into
+    weird issues with eshell
+    #+BEGIN_SRC emacs-lisp
+      (setq shell-file-name "zsh")
+    #+END_SRC
+*** erc
+    I *loved* ecb as a development environment.
+    I ran into an issue once upon a time where using tab-completion
+    with ~find-file~ would bring up completions in the eshell window,
+    disable further tab completion and disable ~quit~.
+    It was horribly disruptive.
+
+    I saw a few failed fixes but haven't looked at it in a while, or
+    tried with helm, since helm would manage its own windows for
+    fuzzy completion.
+    #+BEGIN_SRC emacs-lisp
+      ;; Tmp-ish fix for still-active issue:
+      ;; https://github.com/ecb-home/ecb/issues/10
+      ;; (defun display-buffer-at-bottom--display-buffer-at-bottom-around
+      ;;     (orig-fun &rest args)
+      ;; "Bugfix for ECB: cannot use display-buffer-at-bottom',
+      ;; calldisplay-buffer-use-some-window' instead in ECB frame."
+      ;; (if (and ecb-minor-mode (equal (selected-frame) ecb-frame))
+      ;; (apply 'display-buffer-use-some-window args)
+      ;; (apply orig-fun args)))
+      ;; (advice-add
+      ;;  'display-buffer-at-bottom :around
+      ;;  #'display-buffer-at-bottom--display-buffer-at-bottom-around)
+
+      (use-package ecb
+                   :init
+                   (setq
+                    ecb-eshell-auto-activate t
+                    ecb-eshell-buffer-sync 'always
+                    ;;ecb-layout-name "left15"
+                    ecb-layout-name "left7"
+                    ecb-compile-window-height 6
+                    ecb-compile-window-width 'edit-window
+                    ecb-compile-window-temporarily-enlarge 'after-selection
+                    ecb-windows-width 0.2
+                    ecb-auto-activate nil
+                    ecb-other-window-behavior 'smart
+                    ecb-show-sources-in-directories-buffer 'always
+                    auto-expand-directory-tree 'best
+                    ecb-eshell-enlarge-when-eshell nil
+                    ecb-tip-of-the-day nil)
+                   :config
+                   (add-shortcuts
+                    '(("t d" . ecb-goto-window-directories)
+                      ("t s" . ecb-goto-window-sources)
+                      ("t h" . ecb-goto-window-history)
+                      ("t m" . ecb-goto-window-methods)))
+                   (ecb-activate))
+    #+END_SRC
