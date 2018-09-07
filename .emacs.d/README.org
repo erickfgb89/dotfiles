@@ -39,10 +39,15 @@
 ** use-package
    Load up use-package, which we'll use to load all other packages
    #+BEGIN_SRC emacs-lisp
-   (package-initialize)
-   (eval-when-compile
-     (require 'use-package))
-   (require 'bind-key)
+     (package-initialize)
+     (add-to-list 'package-archives
+                  '("melpa" . "https://melpa.org/packages/") t)
+
+     ;; https://github.com/jwiegley/use-package
+     (setq use-package-always-ensure t)
+     (eval-when-compile
+       (require 'use-package))
+     (require 'bind-key)
    #+END_SRC
 ** Disabled Functions
    A bunch of stuff is disabled by default because it's
@@ -64,6 +69,67 @@
      (put 'upcase-region 'disabled nil) ; C-x C-u
      (put 'set-goal-column 'disabled nil) ; C-x C-n
      (put 'narrow-to-region 'disabled nil) ; C-x n n
+   #+END_SRC
+** UI Options
+   This started as an effort to disable any unneccessary UI elements,
+   like the menu and scroll bars. it's become more of a catch-all for
+   global options that don't really fit elsewhere.
+   #+BEGIN_SRC emacs-lisp
+     (menu-bar-mode -1)
+     ;scroll-bar-mode doesn't exist in nw emacs in os x
+     (and (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+     (and (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+     (and (fboundp 'global-font-lock-mode) (global-font-lock-mode 1))
+     (show-paren-mode 1)
+     (column-number-mode 1)
+     (fset 'yes-or-no-p 'y-or-n-p)
+     ;; whitespace
+     (global-whitespace-mode 1)
+
+     (setq-default indicate-buffer-boundaries t
+                   indent-tabs-mode nil)
+
+     (setq inhibit-startup-message t
+           confirm-kill-emacs 'yes-or-no-p
+           inhibit-startup-message t
+           inhibit-startup-echo-area-message t
+           kill-buffer-query-functions (remq
+                                        'process-kill-buffer-query-function
+                                        kill-buffer-query-functions)
+           x-select-enable-clipboard t
+           visible-bell 1
+           set-mark-command-repeat-pop 1
+           require-final-newline t
+           whitespace-style '(face
+                              tabs
+                              spaces
+                              trailing
+                              lines-tail
+                              ;;space-before-tab::space
+                              newline
+                              indentation
+                              empty
+                              ;;space-after-tab::space
+                              space-mark
+                              tab-mark
+                              newline-mark
+                              indentation::space)
+           face-remapping-alist '((whitespace-tab . whitespace-space-before-tab))
+           ;; backups
+           backup-by-copying t
+           backup-directory-alist
+           `((".*" . ,temporary-file-directory))
+           auto-save-file-name-transforms
+           `((".*" ,temporary-file-directory t))
+           delete-old-versions t
+           kept-new-versions 6
+           kept-old-versions 2
+           version-control t
+           ;; use-package
+           use-package-always-ensure t
+           sh-basic-offset 2
+           sh-indentation 2
+           standard-indent 2)
 
    #+END_SRC
 ** packages
@@ -240,7 +306,7 @@
      #+END_SRC
 **** Eshell prompt
 #+BEGIN_EXAMPLE
-┌─[/path/to/cwd@branch]──[07:47]──[ruby-version]
+┌─[/path/to/cwd@branch]──[hh:mm]──[ruby-version]
 └─> $
 #+END_EXAMPLE
      #+BEGIN_SRC emacs-lisp
@@ -286,6 +352,147 @@
                " "
                ))))
      #+END_SRC
+*** god-mode
+    Run commands without modifiers. I don't use it much,
+    but it comes in handy when I'm browsing around
+    and don't have a searchable expression in mind
+    [[https://github.com/chrisdone/god-mode][god-mode]]
+    #+BEGIN_SRC emacs-lisp
+      (use-package god-mode
+        :bind (("C-z" . god-mode)))
+    #+END_SRC
+*** groovy-mode
+    force groovy-mode for Jenkins pipeline files
+    #+BEGIN_SRC emacs-lisp
+      (use-package groovy-mode
+        :mode "Jenkinsfile\\'"
+        :init (setq groovy-indent-offset 2))
+    #+END_SRC
+*** haskell-mode
+    Use for vanilla and literate Haskell files
+    #+BEGIN_SRC emacs-lisp
+      (use-package haskell-mode
+        :mode "\\.\\(l\\)?hs\\'")
+    #+END_SRC
+*** helm
+    I don't use [[https://emacs-helm.github.io/helm/][helm]] super consistently.
+    It's pretty or whatever but the flashing text
+    can be distracting when I know what I want.
+
+    I'll probably take a break from helm when I come up
+    with a reliable way to use fuzzy completion for /everything/.
+    #+BEGIN_SRC emacs-lisp
+      (use-package helm
+        :init
+          (setq helm-semantic-fuzzy-match t
+                helm-imenu-fuzzy-match t)
+        :bind (("M-x" . helm-M-x))
+        :config
+          (add-shortcuts
+           '(("f" . helm-find-files)
+             ("b" . helm-mini)
+             ("h" . helm-command-prefix)))
+        :init
+          (helm-mode))
+    #+END_SRC
+*** js2-mode
+    enable javascript highlighting for js and json files
+    #+BEGIN_SRC emacs-lisp
+      (use-package js2-mode
+        :mode "\\.js\\(on\\)?\\'"
+        :init (setq js-indent-level 2))
+    #+END_SRC
+*** magit
+    #+BEGIN_SRC emacs-lisp
+      (use-package magit
+        :config
+        (add-shortcuts
+         '(("g s" . magit-status)
+           ("g c" . magit-commit)
+           ("g p" . magit-push)
+           ("g d" . magit-pull))))
+    #+END_SRC
+*** markdown-mode
+    Works out of the box!
+    #+BEGIN_SRC emacs-lisp
+    (use-package markdown-mode)
+    #+END_SRC
+*** mode-icons
+    Display icons for current mode
+    #+BEGIN_SRC emacs-lisp
+      (use-package mode-icons
+        :if (display-graphic-p)
+        :config
+        (mode-icons-mode))
+    #+END_SRC
+*** projectile
+    #+BEGIN_SRC emacs-lisp
+      ;;http://crypt.codemancers.com/posts/2013-09-26-setting-up-emacs-as-development-environment-on-osx/
+      ;;Install exuberant-ctags if ctags fails
+
+      (use-package projectile
+        :config
+        (projectile-global-mode)
+        (setq projectile-enable-caching t))
+
+      ;; projectile-speedbar-open-current-buffer-in-tree
+      (use-package projectile-speedbar :disabled)
+
+      ;; https://github.com/bbatsov/helm-projectile
+      (use-package helm-projectile
+        :config
+        (add-shortcuts
+         '(("p p" . helm-projectile-switch-project)
+           ("p b" . helm-projectile-switch-to-buffer)
+           ("p g" . helm-projectile-grep)
+           ("p f" . helm-projectile-find-file)
+           ("p t" . helm-projectile-find-tag)))
+        :init
+        (helm-projectile-on))
+    #+END_SRC
+*** python-mode
+    #+BEGIN_SRC emacs-lisp
+      (use-package python
+        :mode ("\\.py\\'" . python-mode)
+        :interpreter ("python" . python-mode)
+        :config
+        (message "in python mode")
+        (setq python-indent 2
+              python-indent-offset 2))
+    #+END_SRC
+*** racket-mode
+    #+BEGIN_SRC emacs-lisp
+    (use-package racket-mode)
+    #+END_SRC
+*** rainbow-delimiters
+    https://github.com/Fanael/rainbow-delimiters
+    #+BEGIN_SRC emacs-lisp
+    (use-package rainbow-delimiters)
+    #+END_SRC
+*** recentf
+    #+BEGIN_SRC emacs-lisp
+      (require 'recentf)
+
+      ;; Mostly from: https://masteringemacs.org/article/find-files-faster-recent-files-package
+
+      ;; enable recent files
+      (recentf-mode t)
+
+      ;; limit to 50 for now
+      (setq recentf-max-saved-items 50)
+
+      (defun ido-recentf-open ()
+        "Use `ido-completing-read' to \\[find-file] a recent file"
+        (interactive)
+        (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+            (message "Opening file...")
+          (message "Aborting")))
+
+      (use-package recentf
+        :init (setq recentf-max-saved-items 50)
+        :config (recentf-mode t)
+  
+    #+END_SRC
 ** TODO incorporate and remove from list
    #+BEGIN_SRC emacs-lisp
      ;(load "~/.emacs.d/custom/ace-jump-mode")
@@ -296,33 +503,33 @@
      (load "~/.emacs.d/custom/ecb-config.el")
      ;(load "~/.emacs.d/custom/enable-functions.el")
      ;(load "~/.emacs.d/custom/eshell-custom.el")
-     (load "~/.emacs.d/custom/god-mode.el")
-     (load "~/.emacs.d/custom/groovy-mode.el")
-     (load "~/.emacs.d/custom/haskell.el")
-     (load "~/.emacs.d/custom/helm.el")
-     (load "~/.emacs.d/custom/hide-ui.el")
-     (load "~/.emacs.d/custom/highlights.el")
-     (load "~/.emacs.d/custom/indents.el")
-     (load "~/.emacs.d/custom/js-mode.el")
-     (load "~/.emacs.d/custom/just-for-fun.el")
-     (load "~/.emacs.d/custom/list-gen.el")
-     (load "~/.emacs.d/custom/macros.el")
-     (load "~/.emacs.d/custom/magit.el")
-     (load "~/.emacs.d/custom/manheim.el")
-     (load "~/.emacs.d/custom/margin-of-shame.el")
-     (load "~/.emacs.d/custom/markdown-mode.el")
-     (load "~/.emacs.d/custom/mode-icons.el")
-     (load "~/.emacs.d/custom/on-startup.el")
-     (load "~/.emacs.d/custom/org.el")
-     (load "~/.emacs.d/custom/package-config.el")
-     (load "~/.emacs.d/custom/pacman.el")
-     (load "~/.emacs.d/custom/pollen-mode.el")
-     (load "~/.emacs.d/custom/projectile.el")
-     (load "~/.emacs.d/custom/python-mode.el")
-     (load "~/.emacs.d/custom/racket-mode.el")
-     (load "~/.emacs.d/custom/rainbow-delimiters.el")
-     (load "~/.emacs.d/custom/recent.el")
-     (load "~/.emacs.d/custom/ruby-rake-printer.el")
+     ;(load "~/.emacs.d/custom/god-mode.el")
+     ;(load "~/.emacs.d/custom/groovy-mode.el")
+     ;(load "~/.emacs.d/custom/haskell.el")
+     ;(load "~/.emacs.d/custom/helm.el")
+     ;(load "~/.emacs.d/custom/hide-ui.el")
+     ;(load "~/.emacs.d/custom/highlights.el")
+     ;(load "~/.emacs.d/custom/indents.el")
+     ;(load "~/.emacs.d/custom/js-mode.el")
+     ;(load "~/.emacs.d/custom/just-for-fun.el")
+     ;(load "~/.emacs.d/custom/list-gen.el")
+     ;(load "~/.emacs.d/custom/macros.el")
+     ;(load "~/.emacs.d/custom/magit.el")
+     ;(load "~/.emacs.d/custom/manheim.el")
+     ;(load "~/.emacs.d/custom/margin-of-shame.el")
+     ;(load "~/.emacs.d/custom/markdown-mode.el")
+     ;(load "~/.emacs.d/custom/mode-icons.el")
+     ;(load "~/.emacs.d/custom/on-startup.el")
+     ;(load "~/.emacs.d/custom/org.el")
+     ;(load "~/.emacs.d/custom/package-config.el")
+     ;(load "~/.emacs.d/custom/pacman.el")
+     ;(load "~/.emacs.d/custom/pollen-mode.el")
+     ;(load "~/.emacs.d/custom/projectile.el")
+     ;(load "~/.emacs.d/custom/python-mode.el")
+     ;(load "~/.emacs.d/custom/racket-mode.el")
+     ;(load "~/.emacs.d/custom/rainbow-delimiters.el")
+     ;(load "~/.emacs.d/custom/recent.el")
+     ;(load "~/.emacs.d/custom/ruby-rake-printer.el")
      (load "~/.emacs.d/custom/ruby.el")
      (load "~/.emacs.d/custom/shortcuts.el")
      (load "~/.emacs.d/custom/solarized.el")
