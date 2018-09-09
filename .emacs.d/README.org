@@ -364,7 +364,7 @@
      #+END_SRC
 **** Eshell prompt
 #+BEGIN_EXAMPLE
-┌─[/path/to/cwd@branch]──[hh:mm]──[ruby-version]
+┌─[/path/to/cwd@branch]──[hh:mm]──[rbenv_version]──[exit_code_if_error]
 └─> $
 #+END_EXAMPLE
      #+BEGIN_SRC emacs-lisp
