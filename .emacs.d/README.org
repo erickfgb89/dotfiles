@@ -651,7 +651,7 @@
     #+BEGIN_SRC emacs-lisp
       (setq shell-file-name "zsh")
     #+END_SRC
-*** erc
+*** ecb
     I *loved* ecb as a development environment.
     I ran into an issue once upon a time where using tab-completion
     with ~find-file~ would bring up completions in the eshell window,
