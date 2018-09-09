@@ -49,6 +49,28 @@
        (require 'use-package))
      (require 'bind-key)
    #+END_SRC
+
+*** Update packages
+    from https://github.com/belak/dotfiles/
+    I always run into issues when packages I try to download with use-package
+    don't exist because I haven't refreshed.
+
+    This advice for package-install runs one implicit refresh while we install 
+    stuff for the first time
+    #+BEGIN_SRC emacs-lisp
+      (defvar refreshed-package-list nil
+        "This will be t if the package list has been refreshed.")
+
+      (defun ensure-refreshed ()
+        (unless refreshed-package-list
+          (package-refresh-contents)
+          (setq refreshed-package-list t)))
+
+      (advice-add 'package-install
+                  :before
+                  (lambda (&rest args)
+                    (ensure-refreshed)))
+    #+END_SRC
 ** Disabled Functions
    A bunch of stuff is disabled by default because it's
    too scary to use. There are a few I like to use pretty regularly,
@@ -640,41 +662,45 @@
     tried with helm, since helm would manage its own windows for
     fuzzy completion.
     #+BEGIN_SRC emacs-lisp
-      ;; Tmp-ish fix for still-active issue:
-      ;; https://github.com/ecb-home/ecb/issues/10
-      ;; (defun display-buffer-at-bottom--display-buffer-at-bottom-around
-      ;;     (orig-fun &rest args)
-      ;; "Bugfix for ECB: cannot use display-buffer-at-bottom',
-      ;; calldisplay-buffer-use-some-window' instead in ECB frame."
-      ;; (if (and ecb-minor-mode (equal (selected-frame) ecb-frame))
-      ;; (apply 'display-buffer-use-some-window args)
-      ;; (apply orig-fun args)))
-      ;; (advice-add
-      ;;  'display-buffer-at-bottom :around
-      ;;  #'display-buffer-at-bottom--display-buffer-at-bottom-around)
+            ;; Tmp-ish fix for still-active issue:
+            ;; https://github.com/ecb-home/ecb/issues/10
+            ;; (defun display-buffer-at-bottom--display-buffer-at-bottom-around
+            ;;     (orig-fun &rest args)
+            ;; "Bugfix for ECB: cannot use display-buffer-at-bottom',
+            ;; calldisplay-buffer-use-some-window' instead in ECB frame."
+            ;; (if (and ecb-minor-mode (equal (selected-frame) ecb-frame))
+            ;; (apply 'display-buffer-use-some-window args)
+            ;; (apply orig-fun args)))
+            ;; (advice-add
+            ;;  'display-buffer-at-bottom :around
+            ;;  #'display-buffer-at-bottom--display-buffer-at-bottom-around)
 
-      (use-package ecb
-                   :init
-                   (setq
-                    ecb-eshell-auto-activate t
-                    ecb-eshell-buffer-sync 'always
-                    ;;ecb-layout-name "left15"
-                    ecb-layout-name "left7"
-                    ecb-compile-window-height 6
-                    ecb-compile-window-width 'edit-window
-                    ecb-compile-window-temporarily-enlarge 'after-selection
-                    ecb-windows-width 0.2
-                    ecb-auto-activate nil
-                    ecb-other-window-behavior 'smart
-                    ecb-show-sources-in-directories-buffer 'always
-                    auto-expand-directory-tree 'best
-                    ecb-eshell-enlarge-when-eshell nil
-                    ecb-tip-of-the-day nil)
-                   :config
-                   (add-shortcuts
-                    '(("t d" . ecb-goto-window-directories)
-                      ("t s" . ecb-goto-window-sources)
-                      ("t h" . ecb-goto-window-history)
-                      ("t m" . ecb-goto-window-methods)))
-                   (ecb-activate))
+            (use-package ecb
+                         :init
+                         (setq
+                          ecb-eshell-auto-activate t
+                          ecb-eshell-buffer-sync 'always
+                          ;;ecb-layout-name "left15"
+                          ecb-layout-name "left7"
+                          ecb-compile-window-height 6
+                          ecb-compile-window-width 'edit-window
+                          ecb-compile-window-temporarily-enlarge 'after-selection
+                          ecb-windows-width 0.2
+                          ecb-auto-activate nil
+                          ecb-other-window-behavior 'smart
+                          ecb-show-sources-in-directories-buffer 'always
+                          auto-expand-directory-tree 'best
+                          ecb-eshell-enlarge-when-eshell t
+                          ecb-tip-of-the-day nil)
+                         :config
+                         (add-shortcuts
+                          '(("t d" . ecb-goto-window-directories)
+                            ("t s" . ecb-goto-window-sources)
+                            ("t h" . ecb-goto-window-history)
+                            ("t m" . ecb-goto-window-methods)))
+                         (set-process-sentinel
+                          (start-process "sleep" "*sleep*" "sleep" "2" )
+                          (lambda (a b)
+                            (ecb-activate)
+                            (eshell))))
     #+END_SRC
