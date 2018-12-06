@@ -710,3 +710,18 @@
                       (ecb-activate)
                       (eshell))))
     #+END_SRC
+*** smart-mode-line
+    https://github.com/Malabarba/smart-mode-line
+    #+BEGIN_SRC emacs-lisp
+      (use-package smart-mode-line
+        :init
+        (setq sml/no-confirm-load-theme t
+              sml/theme 'respectful)
+        (sml/setup))
+    #+END_SRC
+*** rinari
+    https://github.com/eschulte/rinari
+    rails minor mode
+    #+BEGIN_SRC emacs-lisp
+      (use-package rinari)
+    #+END_SRC
