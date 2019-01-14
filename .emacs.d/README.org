@@ -1,16 +1,20 @@
 * My Emacs Config
-** Platform Predicates
+** Predicates
    Predicates we'll use later for options that only apply
    to specific configurations
 
    #+BEGIN_SRC emacs-lisp
-   (defun osx-p ()
-     "Check whether we're running OSX"
-     (eq system-type 'darwin))
+     (defun osx-p ()
+       "Check whether we're running OSX"
+       (eq system-type 'darwin))
 
-   (defun linux-p ()
-     "Check whether we're running linux"
-     (eq system-type 'gnu/linux))
+     (defun linux-p ()
+       "Check whether we're running linux"
+       (eq system-type 'gnu/linux))
+
+     (defun font-family-installed-p (font)
+       "Return true if the given font family is installed on this system"
+       (member font (font-family-list)))
    #+END_SRC
 *** Graphical vs Terminal
     I was going to write a predicate to check for a graphical
@@ -107,6 +111,11 @@
      (fset 'yes-or-no-p 'y-or-n-p)
      ;; whitespace
      (global-whitespace-mode 1)
+
+     ;; input.fontbureau.com
+     (if (font-family-installed-p "Input Mono Narrow")
+         (set-frame-font (concat "-*-Input Mono Narrow-normal-normal-"
+                                 "extracondensed-*-12-*-*-*-m-0-iso10646-1")))
 
      (setq-default indicate-buffer-boundaries t
                    indent-tabs-mode nil)
