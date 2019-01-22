@@ -131,6 +131,8 @@
            visible-bell 1
            set-mark-command-repeat-pop 1
            require-final-newline t
+           ;; https://www.emacswiki.org/emacs/WhiteSpace
+           whitespace-line-column 100
            whitespace-style '(face
                               tabs
                               spaces
@@ -481,8 +483,8 @@
         (add-shortcuts
          '(("g s" . magit-status)
            ("g c" . magit-commit)
-           ("g p" . magit-push)
-           ("g d" . magit-pull))))
+           ("g p" . magit-push-current-to-upstream)
+           ("g d" . magit-pull-branch))))
     #+END_SRC
 *** markdown-mode
     Works out of the box!
@@ -562,6 +564,7 @@
     #+BEGIN_SRC emacs-lisp
       (use-package ruby-mode
         :mode "\\.rb\\'"
+        :hook flycheck-mode
         :config
         (setq rbenv-installation-dir "/usr/local/bin/")
         (defadvice inf-ruby-console-auto (before activate-rbenv-for-robe activate)
@@ -571,7 +574,7 @@
         :init
         (add-hook 'ruby-mode-hook 'robe-mode)
         (add-hook 'robe-mode-hook 'ac-robe-setup)
-        (add-hook 'ruby-mode-hook 'flymake-ruby-load)
+        ;(add-hook 'ruby-mode-hook 'flymake-ruby-load)
         (add-hook 'ruby-mode-hook 'company-mode)
         (eval-after-load 'company
           '(push 'company-robe company-backends)))
