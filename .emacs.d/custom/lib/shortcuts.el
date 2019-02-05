@@ -26,7 +26,7 @@ list of dotted pairs of keys and functions to execute"
   (dolist (shortcut defs)
     (let ((key  (car shortcut))
 	  (func (cdr shortcut)))
-      (global-set-key (kbd (concat "C-c C-" key)) func)
+      ;(global-set-key (kbd (concat "C-c C-" key)) func)
       (global-set-key (kbd (concat "C-c " key)) func)
       (global-set-key (kbd (concat "C-S-" key)) func)
       (global-set-key (kbd (concat "H-" key)) func)

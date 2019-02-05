@@ -1,3 +1,4 @@
+# coding: utf-8
 * My Emacs Config
 ** Predicates
    Predicates we'll use later for options that only apply
@@ -223,8 +224,12 @@
      Use ~(C-c ')~ to edit code in its native mode in a separate buffer
      This will trash the current window config
 ***** Window config undo
-      Use ~winner-undo~ (~C-c LEFT~) to restore your previous configuration 
+      Use ~winner-undo~ (~C-c LEFT~) to restore your previous configuration
       after calling ~org-edit-special~ ~(C-c ')~
+*** auto-complete
+    #+BEGIN_SRC emacs-lisp
+      (use-package auto-complete)
+    #+END_SRC
 *** Winner
     Undo and redo window configuration changes
     #+BEGIN_SRC emacs-lisp
@@ -510,7 +515,7 @@
         (setq projectile-enable-caching t))
 
       ;; projectile-speedbar-open-current-buffer-in-tree
-      (use-package projectile-speedbar :disabled)
+      (use-package projectile-speedbar)
 
       ;; https://github.com/bbatsov/helm-projectile
       (use-package helm-projectile
@@ -561,6 +566,16 @@
         (add-shortcuts '(("r" . ido-recentf-open))))
     #+END_SRC
 *** ruby
+    I always forget the more common robe commands
+    https://melpa.org/#/robe
+    |         |                          |
+    |---------+--------------------------|
+    | M-.     | jump to definition       |
+    | M-,     | jump back                |
+    | C-c C-d | see documentation        |
+    | C-c C-k | refresh rails env        |
+    | C-M-i   | complete symbol at point |
+    | C-c C-l | reload file              |
     #+BEGIN_SRC emacs-lisp
       (use-package ruby-mode
         :mode "\\.rb\\'"
@@ -601,7 +616,6 @@
       ;;; https://www.emacswiki.org/emacs/SrSpeedbar
 
       (use-package sr-speedbar
-        :disabled
         :init
         (setq
          sr-speedbar-skip-other-window-p t
@@ -616,8 +630,8 @@
                "Rakefile"
                ".sh"))
         (set-process-sentinel
-         (start-process "sleep" "*sleep*" "sleep" "2" )
-         'open-speedbar))
+         (start-process "sleep" "*sleep*" "sleep" "2")
+         (function (lambda (proc desc) (sr-speedbar-toggle)))))
     #+END_SRC
 *** stackexchange
     Dig up solutions on stack exchange from emacs
