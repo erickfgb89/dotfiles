@@ -616,6 +616,7 @@
       ;;; https://www.emacswiki.org/emacs/SrSpeedbar
 
       (use-package sr-speedbar
+        :disabled
         :init
         (setq
          sr-speedbar-skip-other-window-p t
