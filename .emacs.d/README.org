@@ -515,7 +515,8 @@
         (setq projectile-enable-caching t))
 
       ;; projectile-speedbar-open-current-buffer-in-tree
-      (use-package projectile-speedbar)
+      (use-package projectile-speedbar
+        :disabled)
 
       ;; https://github.com/bbatsov/helm-projectile
       (use-package helm-projectile
