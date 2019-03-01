@@ -753,3 +753,11 @@
     #+BEGIN_SRC emacs-lisp
       (use-package rinari)
     #+END_SRC
+*** pug-mode
+    for pug (jade), a nodejs templating system
+    https://pugjs.org/
+    #+BEGIN_SRC emacs-lisp
+      (use-package pug-mode
+        :config
+        (setq pug-tab-width 2))
+    #+END_SRC

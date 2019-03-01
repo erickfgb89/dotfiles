@@ -1,6 +1,1 @@
----
-#https://docs.rubocop.org/en/latest/configuration/
-Metrics/LineLength:
-  Max: 100
-Metrics/MethodLength:
-  Max: 20
+/Users/ealdaz/Dropbox/dotfiles/.rubocop.yml
