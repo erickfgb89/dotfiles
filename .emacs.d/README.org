@@ -218,7 +218,7 @@
          :config (org-babel-do-load-languages
                   'org-babel-load-languages
                   '(( ruby . t )
-                    ( shell . t ))))
+                    ( sh . t ))))
      #+END_SRC
 ***** Editing
      Use ~(C-c ')~ to edit code in its native mode in a separate buffer
@@ -599,7 +599,7 @@
     Color scheme I picked up at work and use everywhere I go.
     [[https://ethanschoonover.com/solarized/][Check it out!]]
     #+BEGIN_SRC emacs-lisp
-      (use-package solarized-theme
+      (use-package color-theme-solarized
         :config
         (load-theme 'solarized t)
         (enable-theme 'solarized)
