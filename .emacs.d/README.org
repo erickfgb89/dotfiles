@@ -218,7 +218,7 @@
          :config (org-babel-do-load-languages
                   'org-babel-load-languages
                   '(( ruby . t )
-                    ( sh . t ))))
+                    ( shell . t ))))
      #+END_SRC
 ***** Editing
      Use ~(C-c ')~ to edit code in its native mode in a separate buffer
