@@ -375,13 +375,26 @@
      Switch to eshell buffer instead of creating a duplicate eshell
      buffer if one already exists in the current window configuration
      #+BEGIN_SRC emacs-lisp
+       (require 'seq)
+
        (defun select-or-start-eshell ()
-           "Select visible eshell window or select/create eshell buffer in this window"
+         "Select visible eshell window or select/create eshell buffer in this window"
          (interactive)
-          (let ((e-win (get-buffer-window "*eshell*")))
-            (cond (e-win (select-window e-win))
-                  ((get-buffer "*eshell*") (switch-to-buffer "*eshell*"))
-                  (t (eshell)))))
+         (let* ((esh-buffer-name (if (projectile-project-p)
+                                 (concat "*eshell " (projectile-project-name) "*")
+                               "*eshell*"))
+                (e-win (get-buffer-window esh-buffer-name))
+                (eshell-buffer-p (lambda (buffer)
+                                   (string-prefix-p "*eshell"
+                                                    (buffer-name buffer)))))
+           (cond ((funcall eshell-buffer-p (current-buffer))
+                  (bury-buffer)
+                  (switch-to-buffer (car (seq-filter eshell-buffer-p
+                                                     (buffer-list)))))
+                 (e-win (select-window e-win))
+                 ((get-buffer esh-buffer-name) (switch-to-buffer esh-buffer-name))
+                 ((projectile-project-p) (projectile-run-eshell))
+                 (t (eshell)))))
      #+END_SRC
 **** Eshell prompt
 #+BEGIN_EXAMPLE
