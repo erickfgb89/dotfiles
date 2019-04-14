@@ -226,6 +226,15 @@
 ***** Window config undo
       Use ~winner-undo~ (~C-c LEFT~) to restore your previous configuration
       after calling ~org-edit-special~ ~(C-c ')~
+*** hydra
+    I've been fighting this one for a long time. I use two modifiers
+    (typically C-S-) to maintain a state from which I can run any custom commands
+    in sequence (e.g. C-S-o-o-o = C-x o C-x o C-x o) but I find myself struggling
+    on the terminal since no emulator will send C-S to an app.
+*** multiple-cursors
+    #+BEGIN_SRC emacs-lisp
+      (use-package multiple-cursors)
+    #+END_SRC
 *** auto-complete
     #+BEGIN_SRC emacs-lisp
       (use-package auto-complete)
@@ -491,7 +500,7 @@
     enable javascript highlighting for js and json files
     #+BEGIN_SRC emacs-lisp
       (use-package js2-mode
-        :mode "\\.js\\(on\\)?\\'"
+        :mode "\\.js\\'"
         :init (setq js-indent-level 2))
     #+END_SRC
 *** magit
@@ -579,6 +588,21 @@
         (recentf-mode t)
         (add-shortcuts '(("r" . ido-recentf-open))))
     #+END_SRC
+*** flymake
+    #+BEGIN_SRC emacs-lisp
+      (use-package flycheck
+        :hook (ruby-mode . flycheck-mode)
+        :config (setq-default flycheck-disabled-checkers '(chef-foodcritic)))
+      (use-package helm-flycheck)
+    #+END_SRC
+*** robe
+    #+BEGIN_SRC emacs-lisp
+      (use-package robe
+        :hook (ruby-mode . robe-mode)
+        :init
+        (add-hook 'robe-mode-hook 'ac-robe-setup))
+      (use-package helm-robe)
+    #+END_SRC
 *** ruby
     I always forget the more common robe commands
     https://melpa.org/#/robe
@@ -593,20 +617,12 @@
     #+BEGIN_SRC emacs-lisp
       (use-package ruby-mode
         :mode "\\.rb\\'"
-        :hook flycheck-mode
         :config
         (setq rbenv-installation-dir "/usr/local/bin/")
         (defadvice inf-ruby-console-auto (before activate-rbenv-for-robe activate)
           (rbenv-use-corresponding))
         (when (eq system-type 'darwin)
-          (setq projectile-tags-command "/usr/local/bin/ctags -Re -f \"%s\" %s"))
-        :init
-        (add-hook 'ruby-mode-hook 'robe-mode)
-        (add-hook 'robe-mode-hook 'ac-robe-setup)
-        ;(add-hook 'ruby-mode-hook 'flymake-ruby-load)
-        (add-hook 'ruby-mode-hook 'company-mode)
-        (eval-after-load 'company
-          '(push 'company-robe company-backends)))
+          (setq projectile-tags-command "/usr/local/bin/ctags -Re -f \"%s\" %s")))
     #+END_SRC
 *** solarized
     Color scheme I picked up at work and use everywhere I go.
