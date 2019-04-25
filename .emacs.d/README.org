@@ -231,6 +231,12 @@
     (typically C-S-) to maintain a state from which I can run any custom commands
     in sequence (e.g. C-S-o-o-o = C-x o C-x o C-x o) but I find myself struggling
     on the terminal since no emulator will send C-S to an app.
+*** lua-mode
+    #+BEGIN_SRC emacs-lisp
+      (use-package lua-mode
+       :config
+       (setq lua-indent-level 1))
+    #+END_SRC
 *** multiple-cursors
     #+BEGIN_SRC emacs-lisp
       (use-package multiple-cursors)
@@ -534,7 +540,8 @@
       (use-package projectile
         :config
         (projectile-global-mode)
-        (setq projectile-enable-caching t))
+        (setq projectile-switch-project-action 'select-or-start-eshell
+              projectile-enable-caching t))
 
       ;; projectile-speedbar-open-current-buffer-in-tree
       (use-package projectile-speedbar
@@ -550,6 +557,7 @@
            ("p f" . helm-projectile-find-file)
            ("p t" . helm-projectile-find-tag)))
         :init
+        (setq projectile-completion-system 'helm)
         (helm-projectile-on))
     #+END_SRC
 *** python-mode
