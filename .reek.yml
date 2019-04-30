@@ -1,4 +1,10 @@
 ---
-UncommunicativeVariableName:
-  enabled: true
-  accept: [k,v]
+# https://github.com/troessner/reek/blob/master/docs/Code-Smells.md
+detectors:
+  UncommunicativeVariableName:
+    enabled: true
+    accept:
+      - k
+      - v
+      - _
+      - i

@@ -1,3 +1,5 @@
+---
+# https://www.rubocop.org/en/latest/cops_layout/
 Metrics/LineLength:
   Max: 100
 Metrics/MethodLength:
