@@ -8,3 +8,6 @@ detectors:
       - v
       - _
       - i
+  TooManyStatements:
+    enabled: true
+    max_statements: 10

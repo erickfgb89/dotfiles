@@ -412,10 +412,10 @@
                  (t (eshell)))))
      #+END_SRC
 **** Eshell prompt
-#+BEGIN_EXAMPLE
-┌─[/path/to/cwd@branch]──[hh:mm]──[rbenv_version]──[exit_code_if_error]
-└─> $
-#+END_EXAMPLE
+     #+BEGIN_EXAMPLE
+     ┌─[/path/to/cwd@branch]──[hh:mm]──[rbenv_version]──[exit_code_if_error]
+     └─> $
+     #+END_EXAMPLE
      #+BEGIN_SRC emacs-lisp
        (setq eshell-prompt-function
              (lambda ()
@@ -538,10 +538,12 @@
       ;;Install exuberant-ctags if ctags fails
 
       (use-package projectile
+        :defer 2
         :config
         (projectile-global-mode)
-        (setq projectile-switch-project-action 'select-or-start-eshell
-              projectile-enable-caching t))
+        (setq projectile-switch-project-action 'wg-switch-to-project
+              projectile-enable-caching t
+              projectile-project-search-path '("~/dev/")))
 
       ;; projectile-speedbar-open-current-buffer-in-tree
       (use-package projectile-speedbar
@@ -702,12 +704,38 @@
               wg-mode-line-decor-right-brace "]"          ; how to surround it
               wg-mode-line-decor-divider ":")
         (add-shortcuts
-         '(("w i" . workgroups-mode)
-           ("w c" . wg-create-workgroup)
+         '(("w c" . wg-create-workgroup)
            ("w o" . wg-switch-to-workgroup)
            ("w k" . wg-kill-workgroup)
-           ("w w" . wg-kill-workgroup-and-buffers))))
+           ("w w" . wg-kill-workgroup-and-buffers)))
+        (workgroups-mode))
     #+END_SRC
+**** Create a workgroup based on a projectile project name
+     I'd like to have a predefined workgroup layout triggered on 'projectile-switch-to-project
+     #+BEGIN_SRC emacs-lisp
+       (defun wg-switch-to-project ()
+         (if (projectile-project-p)
+             (let* ((project-name (projectile-project-name))
+                    (workgroup (wg-get-workgroup project-name t)))
+               (if workgroup ;wg exists
+                   (wg-switch-to-workgroup workgroup)
+                 (wg-create-workgroup project-name)
+                 (delete-other-windows)
+                 (find-file (wg-get-first-existing-dir))
+                 (split-window-below (- (window-height) 10))
+                 (other-window 1)
+                 (select-or-start-eshell)
+                 (other-window -1)))))
+
+       (defadvice other-window (before ignore-small-eshell-windows activate)
+         "Skip eshell windows in a small lower window during interactive other-window"
+         (if (and
+              (= 1 (ad-get-arg 0))
+              (string-match-p ".*eshell.*"
+                              (buffer-name (window-buffer (next-window))))
+              (< 15 (window-height)))
+             (ad-set-arg 0 2)))
+     #+END_SRC
 *** yaml
     Including ~.yml~ and ~.yml.erb~
     #+BEGIN_SRC emacs-lisp
