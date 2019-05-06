@@ -727,14 +727,25 @@
                  (select-or-start-eshell)
                  (other-window -1)))))
 
-       (defadvice other-window (before ignore-small-eshell-windows activate)
-         "Skip eshell windows in a small lower window during interactive other-window"
-         (if (and
-              (= 1 (ad-get-arg 0))
-              (string-match-p ".*eshell.*"
-                              (buffer-name (window-buffer (next-window))))
-              (< 15 (window-height)))
-             (ad-set-arg 0 2)))
+       ;; (defadvice other-window (before ignore-small-eshell-windows activate)
+       ;;   "Skip eshell windows in a small lower window during interactive other-window"
+       ;;   (if (and
+       ;;        (= 1 (ad-get-arg 0))
+       ;;        (string-match-p ".*eshell.*"
+       ;;                        (buffer-name (window-buffer (next-window))))
+       ;;        (< 15 (window-height)))
+       ;;       (ad-set-arg 0 2)))
+
+       (advice-add 'other-window
+                   :filter-args
+                   (lambda (args)
+                     "Skip eshell windows in a small lower window during interactive other-window"
+                     (let ((window (next-window)))
+                       (if (and (= 1 (car args))
+                                (string-match-p ".*eshell.*" (buffer-name (window-buffer window)))
+                                (> 15 (window-height window)))
+                           (cons 2 (cdr args))
+                         args))))
      #+END_SRC
 *** yaml
     Including ~.yml~ and ~.yml.erb~
