@@ -299,13 +299,19 @@
         :config
         :defer 1
         :init
+        (defvar use-selected-window nil
+          "Set to t to use the selected window to run eshell")
+        (defvar eshell-pre-command-point nil
+          "Point before command is run.")
+        (defvar eshell-side-window-height 10
+          "Height of a side window created for eshell.")
         (add-shortcuts
          '(("e" . run-eshell)))
         (add-to-list 'display-buffer-alist
                      `("^\\*eshell.*\\*$"
                        (popup-eshell)
                        (side . bottom)
-                       (window-height . 10)
+                       (window-height . ,eshell-side-window-height)
                        (preserve-size . (t . nil))))
         (setenv "PATH"
                 (replace-regexp-in-string
@@ -395,8 +401,6 @@
      #+END_SRC
 **** Run eshell in a side window
      #+BEGIN_SRC emacs-lisp
-       (defvar use-selected-window nil
-         "Set to t to use the selected window to run eshell")
        (defun run-eshell (&optional same-window)
          (interactive "P")
          (setq use-selected-window same-window)
@@ -407,7 +411,6 @@
                (projectile-run-eshell) ; run project-specific eshell
              (eshell))                 ; run default eshell
            (unless same-window
-             (temp-buffer-resize-mode) ; resize to fit command output
              (set-window-dedicated-p   ; don't allow anybody to use the tiny window
               (selected-window) t))))
 
@@ -444,6 +447,61 @@
                  ((get-buffer esh-buffer-name) (switch-to-buffer esh-buffer-name))
                  ((projectile-project-p) (projectile-run-eshell))
                  (t (eshell)))))
+     #+END_SRC
+**** Eshell command hooks
+     Enlarge eshell window to 80% of frame height on command output, if necessary
+     #+BEGIN_SRC emacs-lisp
+
+       (add-hook 'eshell-pre-command-hook 'eshell-mark-pre-command)
+       (add-hook 'eshell-post-command-hook 'eshell-resize-window)
+
+       (defun eshell-resize-window ()
+         "Resize an eshell side window to fit command output."
+         (interactive) ;; for now
+         ;; if this is a side window
+         (if (and (integer-or-marker-p eshell-pre-command-point)
+                  (window-parameter (selected-window) 'window-side))
+             (let ((height (window-height (selected-window) 'ceiling)))
+               (window-resize (selected-window)
+                              ;; limit to 80% frame height
+                              ;; at least current height
+                              ;; add 2 for modeline or whatever
+                              (- (min
+                                  (max
+                                   (+ 2
+                                      (count-lines
+                                       eshell-pre-command-point
+                                       (point)))
+                                   height)
+                                  (floor (* (frame-height) 0.8)))
+                                 height))
+               (recenter -1) ; back to top
+               (setq eshell-pre-command-point nil)))) ;reset
+
+       (defun eshell-mark-pre-command ()
+         "Save point immediately before a command."
+         (setq eshell-pre-command-point (point)))
+
+       (advice-add 'other-window
+                   :before
+                   (lambda (args)
+                     "Shrink eshell side window to default size"
+                     (let ((window (selected-window)))
+                       (if (and (string-match-p ".*eshell.*" (buffer-name))
+                                (window-parameter window 'window-side))
+                           (window-resize window (- eshell-side-window-height
+                                                    (window-height window 'ceiling)))))))
+
+       (advice-add 'other-window
+                   :filter-args
+                   (lambda (args)
+                     "Skip eshell windows in a small lower window during interactive other-window"
+                     (let ((window (next-window)))
+                       (if (and (= 1 (car args))
+                                (string-match-p ".*eshell.*" (buffer-name (window-buffer window)))
+                                (window-parameter window 'window-side))
+                           (cons 2 (cdr args))
+                         args))))
      #+END_SRC
 **** Eshell prompt
      #+BEGIN_EXAMPLE
@@ -758,17 +816,6 @@
                  (find-file (wg-get-first-existing-dir))
                  (run-eshell)
                  (other-window -1)))))
-
-       (advice-add 'other-window
-                   :filter-args
-                   (lambda (args)
-                     "Skip eshell windows in a small lower window during interactive other-window"
-                     (let ((window (next-window)))
-                       (if (and (= 1 (car args))
-                                (string-match-p ".*eshell.*" (buffer-name (window-buffer window)))
-                                (> 15 (window-height window)))
-                           (cons 2 (cdr args))
-                         args))))
      #+END_SRC
 *** yaml
     Including ~.yml~ and ~.yml.erb~
