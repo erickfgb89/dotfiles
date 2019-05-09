@@ -297,9 +297,16 @@
     #+BEGIN_SRC emacs-lisp
       (use-package eshell
         :config
-        (add-shortcuts
-         '(("e" . select-or-start-eshell)))
+        :defer 1
         :init
+        (add-shortcuts
+         '(("e" . run-eshell)))
+        (add-to-list 'display-buffer-alist
+                     `("^\\*eshell.*\\*$"
+                       (popup-eshell)
+                       (side . bottom)
+                       (window-height . 10)
+                       (preserve-size . (t . nil))))
         (setenv "PATH"
                 (replace-regexp-in-string
                  "~"
@@ -385,6 +392,33 @@
                 (error "%s is not a bookmark" bookmark))))))
 
        ;; end eshell/bmk
+     #+END_SRC
+**** Run eshell in a side window
+     #+BEGIN_SRC emacs-lisp
+       (defvar use-selected-window nil
+         "Set to t to use the selected window to run eshell")
+       (defun run-eshell (&optional same-window)
+         (interactive "P")
+         (setq use-selected-window same-window)
+         ;; if this is a side-window
+         (if (window-parameter (selected-window) 'window-side)
+             (delete-window)
+           (if (projectile-project-p)
+               (projectile-run-eshell) ; run project-specific eshell
+             (eshell))                 ; run default eshell
+           (unless same-window
+             (temp-buffer-resize-mode) ; resize to fit command output
+             (set-window-dedicated-p   ; don't allow anybody to use the tiny window
+              (selected-window) t))))
+
+       ;; set variables:
+       ;; temp-buffer-max-height
+       ;; temp-buffer-max-width
+       (defun popup-eshell (buffer alist)
+         (if use-selected-window
+             (progn
+               (display-buffer-same-window buffer alist))
+           (display-buffer-in-side-window buffer alist)))
      #+END_SRC
 **** Select existing eshell buffer
      Switch to eshell buffer instead of creating a duplicate eshell
@@ -722,19 +756,8 @@
                  (wg-create-workgroup project-name)
                  (delete-other-windows)
                  (find-file (wg-get-first-existing-dir))
-                 (split-window-below (- (window-height) 10))
-                 (other-window 1)
-                 (select-or-start-eshell)
+                 (run-eshell)
                  (other-window -1)))))
-
-       ;; (defadvice other-window (before ignore-small-eshell-windows activate)
-       ;;   "Skip eshell windows in a small lower window during interactive other-window"
-       ;;   (if (and
-       ;;        (= 1 (ad-get-arg 0))
-       ;;        (string-match-p ".*eshell.*"
-       ;;                        (buffer-name (window-buffer (next-window))))
-       ;;        (< 15 (window-height)))
-       ;;       (ad-set-arg 0 2)))
 
        (advice-add 'other-window
                    :filter-args
