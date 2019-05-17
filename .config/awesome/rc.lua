@@ -280,8 +280,8 @@ globalkeys = awful.util.table.join(
     -- -- CUSTOM -- --
     awful.key({ modkey,           }, "e", function () awful.spawn("emacs") end,
               {description = "launch emacs", group = "launcher"}),
-    awful.key({ modkey,           }, "w", function () awful.spawn("firefox") end,
-              {description = "launch firefox", group = "launcher"}),
+    awful.key({ modkey,           }, "w", function () awful.spawn("vivaldi") end,
+              {description = "launch vialdi", group = "launcher"}),
     -- --  END   -- --
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
