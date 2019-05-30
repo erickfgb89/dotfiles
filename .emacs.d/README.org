@@ -502,6 +502,20 @@
                                 (window-parameter window 'window-side))
                            (cons 2 (cdr args))
                          args))))
+
+       (advice-add 'wg-switch-to-workgroup
+                   :after
+                   (lambda (args)
+                     "Re-tag eshell side windows"
+                     (dolist (window (window-list))
+                       (if (and (window-dedicated-p window)
+                                (string-match-p ".*eshell.*" (buffer-name (window-buffer window))))
+                           (progn
+                             ;; set 'window-side to skip on 'other-window with eshell advice
+                             (set-window-parameter window 'window-side 'bottom)
+                             (set-window-parameter window 'window-slot '0)
+                             ;; preserve window width
+                             (window-preserve-size window t t))))))
      #+END_SRC
 **** Eshell prompt
      #+BEGIN_EXAMPLE
@@ -649,7 +663,8 @@
            ("p b" . helm-projectile-switch-to-buffer)
            ("p g" . helm-projectile-grep)
            ("p f" . helm-projectile-find-file)
-           ("p t" . helm-projectile-find-tag)))
+           ("p t" . helm-projectile-find-tag)
+           ("p c" . projectile-commander)))
         :init
         (setq projectile-completion-system 'helm)
         (helm-projectile-on))
@@ -809,13 +824,14 @@
          (if (projectile-project-p)
              (let* ((project-name (projectile-project-name))
                     (workgroup (wg-get-workgroup project-name t)))
+               (if (window-dedicated-p)
+                   (other-window 1))
                (if workgroup ;wg exists
                    (wg-switch-to-workgroup workgroup)
                  (wg-create-workgroup project-name)
                  (delete-other-windows)
                  (find-file (wg-get-first-existing-dir))
-                 (run-eshell)
-                 (other-window -1)))))
+                 (projectile-commander)))))
      #+END_SRC
 *** yaml
     Including ~.yml~ and ~.yml.erb~
