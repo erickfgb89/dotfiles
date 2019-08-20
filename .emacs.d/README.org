@@ -209,6 +209,10 @@
 
    #+END_SRC
 ** packages
+*** hyperbole
+    #+BEGIN_SRC emacs-lisp
+      (use-package hyperbole)
+    #+END_SRC
 *** org-mode
 **** SRC blocks
      /Note/: Use <s TAB to insert src block (see [[https://orgmode.org/manual/Easy-templates.html][easy templates]])
