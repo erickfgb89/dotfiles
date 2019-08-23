@@ -181,6 +181,40 @@
      #+BEGIN_SRC emacs-lisp
      (setq mac-command-modifier 'hyper) ; make cmd key do Meta
      #+END_SRC
+** Vault
+   #+BEGIN_SRC emacs-lisp
+     (defun find-and-set (token var)
+       (save-excursion
+         (beginning-of-buffer)
+         (search-forward-regexp (concat token " +"))
+         (let ((start (point)))
+           (end-of-line)
+           (setenv var (buffer-substring start (point))))))
+
+     (defun aws-creds (acct)
+       (interactive)
+       (with-temp-buffer
+         (call-process "vault" nil (current-buffer) nil "write"
+                       (concat "aws_" acct "/sts/devopser") "ttl=12h")
+         (find-and-set "access_key" "AWS_ACCESS_KEY_ID")
+         (find-and-set "secret_key" "AWS_SECRET_ACCESS_KEY")
+         (find-and-set "security_token" "AWS_SESSION_TOKEN"))
+       ;; set variables again in current shell,
+       ;; where this function was called
+       (setenv "AWS_ACCESS_KEY_ID" (getenv "AWS_ACCESS_KEY_ID"))
+       (setenv "AWS_SECRET_ACCESS_KEY" (getenv "AWS_SECRET_ACCESS_KEY"))
+       (setenv "AWS_SESSION_TOKEN" (getenv "AWS_SESSION_TOKEN")))
+
+     (defun dev-token ()
+       (interactive)
+       "Call from eshell to generate dev account credentials"
+       (aws-creds "dev"))
+
+     (defun prod-token ()
+       (interactive)
+       "Call from eshell to generate prod account credentials"
+       (aws-creds "prod"))
+   #+END_SRC
 ** TODO Backup files
    I'm pretty sure my backup config doesn't work the way I think it does
    #+BEGIN_SRC emacs-lisp
@@ -318,34 +352,41 @@
                        (side . bottom)
                        (window-height . ,eshell-side-window-height)
                        (preserve-size . (t . nil))))
-        (setenv "PATH"
-                (replace-regexp-in-string
-                 "~"
-                 (getenv "HOME")
-                 (concat "~/.rbenv/shims:"
-                         "~/.asdf/shims:"
-                         "~/.asdf/bin:"
-                         "~/.cabal/bin:"
-                         "~/dev/eventer-workstation-utils/bin:"
-                         "/usr/local/bin:"
-                         "~/Library/Python/3.6/bin:"
-                         "~/.local/bin:"
-                         (getenv "PATH"))))
-        (setq exec-path
-              (append exec-path
-                      (mapcar (lambda (path)
-                                (replace-regexp-in-string
-                                 "~"
-                                 (getenv "HOME")
-                                 path))
-                              '("~/.rbenv/shims"
-                                "~/.asdf/shims"
-                                "~/.asdf/bin"
-                                "~/.cabal/bin"
-                                "~/dev/eventer-workstation-utils/bin"
-                                "~/Library/Python/3.6/bin"
-                                "~/.local/bin"
-                                "/usr/local/bin")))))
+        (setenv "VAULT_ADDR" (shell-command-to-string ". ~/.zshrc; echo -n $VAULT_ADDR"))
+        (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
+          (setenv "PATH" path)
+          (setq exec-path
+                (append
+                 (split-string-and-unquote path ":")
+                 exec-path))))
+        ;; (setenv "PATH"
+        ;;         (replace-regexp-in-string
+        ;;          "~"
+        ;;          (getenv "HOME")
+        ;;          (concat "~/.rbenv/shims:"
+        ;;                  "~/.asdf/shims:"
+        ;;                  "~/.asdf/bin:"
+        ;;                  "~/.cabal/bin:"
+        ;;                  "~/dev/eventer-workstation-utils/bin:"
+        ;;                  "/usr/local/bin:"
+        ;;                  "~/Library/Python/3.6/bin:"
+        ;;                  "~/.local/bin:"
+        ;;                  (getenv "PATH"))))
+        ;; (setq exec-path
+        ;;       (append exec-path
+        ;;               (mapcar (lambda (path)
+        ;;                         (replace-regexp-in-string
+        ;;                          "~"
+        ;;                          (getenv "HOME")
+        ;;                          path))
+        ;;                       '("~/.rbenv/shims"
+        ;;                         "~/.asdf/shims"
+        ;;                         "~/.asdf/bin"
+        ;;                         "~/.cabal/bin"
+        ;;                         "~/dev/eventer-workstation-utils/bin"
+        ;;                         "~/Library/Python/3.6/bin"
+        ;;                         "~/.local/bin"
+        ;;                         "/usr/local/bin")))))
     #+END_SRC
 **** TODO executables [0/4]
      - [ ] eventer-workstation-utils
