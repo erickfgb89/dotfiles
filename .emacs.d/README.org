@@ -251,13 +251,14 @@
 **** SRC blocks
      /Note/: Use <s TAB to insert src block (see [[https://orgmode.org/manual/Easy-templates.html][easy templates]])
      #+BEGIN_SRC emacs-lisp
-;:bind (([remap org-return] . org-return-indent))))
-       (use-package org
-         :init (setq org-src-tab-acts-natively t)
-         :config (org-babel-do-load-languages
-                  'org-babel-load-languages
-                  '(( ruby . t )
-                    ( shell . t ))))
+              ;:bind (([remap org-return] . org-return-indent))))
+                     (use-package org
+                       :init (setq org-src-tab-acts-natively t)
+                       :config (org-babel-do-load-languages
+                                'org-babel-load-languages
+                                '(( ruby . t )
+                                  ( ditaa . t )
+                                  ( shell . t ))))
      #+END_SRC
 ***** Editing
      Use ~(C-c ')~ to edit code in its native mode in a separate buffer
