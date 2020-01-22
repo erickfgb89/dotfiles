@@ -166,8 +166,8 @@
        (cons "s" 'save-buffer)
        (cons "x" 'kmacro-end-or-call-macro)
        (cons "p s" 'sr-speedbar-select-window)
-       ;(cons "f" 'find-file) ;replaced by helm
-       ;(cons "b" 'switch-to-buffer) ;replaced by helm
+       (cons "f" 'counsel-find-file)
+       (cons "b" 'switch-to-buffer)
        )
       )
 
@@ -214,6 +214,7 @@
        (interactive)
        "Call from eshell to generate prod account credentials"
        (aws-creds "prod"))
+
    #+END_SRC
 ** TODO Backup files
    I'm pretty sure my backup config doesn't work the way I think it does
@@ -244,6 +245,7 @@
    #+END_SRC
 ** packages
 *** hyperbole
+    https://www.gnu.org/software/hyperbole/
     #+BEGIN_SRC emacs-lisp
       (use-package hyperbole)
     #+END_SRC
@@ -619,6 +621,7 @@
     [[https://github.com/chrisdone/god-mode][god-mode]]
     #+BEGIN_SRC emacs-lisp
       (use-package god-mode
+        :disabled
         :bind (("C-z" . god-mode)))
     #+END_SRC
 *** groovy-mode
@@ -634,6 +637,19 @@
       (use-package haskell-mode
         :mode "\\.\\(l\\)?hs\\'")
     #+END_SRC
+*** ivy
+    I'm still bouncing back and forth between ivy and helm.
+    #+BEGIN_SRC emacs-lisp
+      (use-package ivy
+        :config
+        (ivy-mode 1)
+        :init
+        (add-shortcuts
+         '(("f" . find-file))))
+      (use-package swiper
+        :bind (("C-s" . swiper)))
+      (use-package counsel)
+    #+END_SRC
 *** helm
     I don't use [[https://emacs-helm.github.io/helm/][helm]] super consistently.
     It's pretty or whatever but the flashing text
@@ -643,6 +659,7 @@
     with a reliable way to use fuzzy completion for /everything/.
     #+BEGIN_SRC emacs-lisp
       (use-package helm
+        :disabled
         :init
           (setq helm-semantic-fuzzy-match t
                 helm-imenu-fuzzy-match t)
@@ -696,7 +713,15 @@
         (projectile-global-mode)
         (setq projectile-switch-project-action 'wg-switch-to-project
               projectile-enable-caching t
-              projectile-project-search-path '("~/dev/")))
+              projectile-project-search-path '("~/dev/"))
+        :init
+        (add-shortcuts
+         '(("p p" . projectile-switch-project)
+           ("p b" . projectile-switch-to-buffer)
+           ("p g" . projectile-grep)
+           ("p f" . projectile-find-file)
+           ("p t" . projectile-find-tag)
+           ("p c" . projectile-commander))))
 
       ;; projectile-speedbar-open-current-buffer-in-tree
       (use-package projectile-speedbar
@@ -704,6 +729,7 @@
 
       ;; https://github.com/bbatsov/helm-projectile
       (use-package helm-projectile
+        :disabled
         :config
         (add-shortcuts
          '(("p p" . helm-projectile-switch-project)
@@ -756,7 +782,11 @@
     #+BEGIN_SRC emacs-lisp
       (use-package flycheck
         :hook (ruby-mode . flycheck-mode)
-        :config (setq-default flycheck-disabled-checkers '(chef-foodcritic)))
+        :config (setq-default
+                 flycheck-disabled-checkers
+                 '(chef-foodcritic
+                   ; can't stand the bogus errors from reek
+                   ruby-reek)))
       (use-package helm-flycheck)
     #+END_SRC
 *** robe
