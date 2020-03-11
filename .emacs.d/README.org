@@ -458,7 +458,7 @@
          (if (window-parameter (selected-window) 'window-side)
              (delete-window)
            (if (projectile-project-p)
-               (projectile-run-eshell) ; run project-specific eshell
+               (call-interactively 'projectile-run-eshell) ; run project-specific eshell
              (eshell))                 ; run default eshell
            (unless same-window
              (set-window-dedicated-p   ; don't allow anybody to use the tiny window
