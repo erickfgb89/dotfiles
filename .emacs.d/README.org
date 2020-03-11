@@ -44,6 +44,7 @@
 ** use-package
    Load up use-package, which we'll use to load all other packages
    #+BEGIN_SRC emacs-lisp
+     (require 'package)
      (package-initialize)
      (add-to-list 'package-archives
                   '("melpa" . "https://melpa.org/packages/") t)
@@ -822,10 +823,12 @@
     Color scheme I picked up at work and use everywhere I go.
     [[https://ethanschoonover.com/solarized/][Check it out!]]
     #+BEGIN_SRC emacs-lisp
-      (use-package color-theme-solarized
+      (use-package solarized-theme
         :config
-        (load-theme 'solarized t)
-        (enable-theme 'solarized)
+        (if (display-graphic-p)
+            (progn
+              (load-theme 'solarized-dark t)
+              (enable-theme 'solarized-dark)))
         :init
         (setq frame-background-mode 'dark))
     #+END_SRC
