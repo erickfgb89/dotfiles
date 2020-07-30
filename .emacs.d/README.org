@@ -40,7 +40,11 @@
     #+BEGIN_SRC emacs-lisp
       (load "~/.emacs.d/custom/lib/shortcuts")
     #+END_SRC
-
+*** projectile library
+    #+BEGIN_SRC emacs-lisp
+      (add-to-list 'load-path "~/.emacs.d/lib/")
+      (load "popup-eshell")
+    #+END_SRC
 ** use-package
    Load up use-package, which we'll use to load all other packages
    #+BEGIN_SRC emacs-lisp
@@ -350,12 +354,6 @@
           "Height of a side window created for eshell.")
         (add-shortcuts
          '(("e" . run-eshell)))
-        (add-to-list 'display-buffer-alist
-                     `("^\\*eshell.*\\*$"
-                       (popup-eshell)
-                       (side . bottom)
-                       (window-height . ,eshell-side-window-height)
-                       (preserve-size . (t . nil))))
         (setenv "VAULT_ADDR" (shell-command-to-string ". ~/.zshrc; echo -n $VAULT_ADDR"))
         (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
           (setenv "PATH" path)
@@ -449,123 +447,35 @@
 
        ;; end eshell/bmk
      #+END_SRC
-**** Run eshell in a side window
-     #+BEGIN_SRC emacs-lisp
-       (defun run-eshell (&optional same-window)
-         (interactive "P")
-         (setq use-selected-window same-window)
-         ;; if this is a side-window
-         (if (window-parameter (selected-window) 'window-side)
-             (delete-window)
-           (if (projectile-project-p)
-               (call-interactively 'projectile-run-eshell) ; run project-specific eshell
-             (eshell))                 ; run default eshell
-           (unless same-window
-             (set-window-dedicated-p   ; don't allow anybody to use the tiny window
-              (selected-window) t))))
-
-       ;; set variables:
-       ;; temp-buffer-max-height
-       ;; temp-buffer-max-width
-       (defun popup-eshell (buffer alist)
-         (if use-selected-window
-             (progn
-               (display-buffer-same-window buffer alist))
-           (display-buffer-in-side-window buffer alist)))
-     #+END_SRC
 **** Select existing eshell buffer
      Switch to eshell buffer instead of creating a duplicate eshell
      buffer if one already exists in the current window configuration
      #+BEGIN_SRC emacs-lisp
-       (require 'seq)
+       ;; (require 'seq)
 
-       (defun select-or-start-eshell ()
-         "Select visible eshell window or select/create eshell buffer in this window"
-         (interactive)
-         (let* ((esh-buffer-name (if (projectile-project-p)
-                                 (concat "*eshell " (projectile-project-name) "*")
-                               "*eshell*"))
-                (e-win (get-buffer-window esh-buffer-name))
-                (eshell-buffer-p (lambda (buffer)
-                                   (string-prefix-p "*eshell"
-                                                    (buffer-name buffer)))))
-           (cond ((funcall eshell-buffer-p (current-buffer))
-                  (bury-buffer)
-                  (switch-to-buffer (car (seq-filter eshell-buffer-p
-                                                     (buffer-list)))))
-                 (e-win (select-window e-win))
-                 ((get-buffer esh-buffer-name) (switch-to-buffer esh-buffer-name))
-                 ((projectile-project-p) (projectile-run-eshell))
-                 (t (eshell)))))
+       ;; (defun select-or-start-eshell ()
+       ;;   "Select visible eshell window or select/create eshell buffer in this window"
+       ;;   (interactive)
+       ;;   (let* ((esh-buffer-name (if (projectile-project-p)
+       ;;                           (concat "*eshell " (projectile-project-name) "*")
+       ;;                         "*eshell*"))
+       ;;          (e-win (get-buffer-window esh-buffer-name))
+       ;;          (eshell-buffer-p (lambda (buffer)
+       ;;                             (string-prefix-p "*eshell"
+       ;;                                              (buffer-name buffer)))))
+       ;;     (cond ((funcall eshell-buffer-p (current-buffer))
+       ;;            (bury-buffer)
+       ;;            (switch-to-buffer (car (seq-filter eshell-buffer-p
+       ;;                                               (buffer-list)))))
+       ;;           (e-win (select-window e-win))
+       ;;           ((get-buffer esh-buffer-name) (switch-to-buffer esh-buffer-name))
+       ;;           ((projectile-project-p) (projectile-run-eshell))
+       ;;           (t (eshell)))))
      #+END_SRC
 **** Eshell command hooks
      Enlarge eshell window to 80% of frame height on command output, if necessary
      #+BEGIN_SRC emacs-lisp
 
-       (add-hook 'eshell-pre-command-hook 'eshell-mark-pre-command)
-       (add-hook 'eshell-post-command-hook 'eshell-resize-window)
-
-       (defun eshell-resize-window ()
-         "Resize an eshell side window to fit command output."
-         (interactive) ;; for now
-         ;; if this is a side window
-         (if (and (integer-or-marker-p eshell-pre-command-point)
-                  (window-parameter (selected-window) 'window-side))
-             (let ((height (window-height (selected-window) 'ceiling)))
-               (window-resize (selected-window)
-                              ;; limit to 80% frame height
-                              ;; at least current height
-                              ;; add 2 for modeline or whatever
-                              (- (min
-                                  (max
-                                   (+ 2
-                                      (count-lines
-                                       eshell-pre-command-point
-                                       (point)))
-                                   height)
-                                  (floor (* (frame-height) 0.8)))
-                                 height))
-               (recenter -1) ; back to top
-               (setq eshell-pre-command-point nil)))) ;reset
-
-       (defun eshell-mark-pre-command ()
-         "Save point immediately before a command."
-         (setq eshell-pre-command-point (point)))
-
-       (advice-add 'other-window
-                   :before
-                   (lambda (args)
-                     "Shrink eshell side window to default size"
-                     (let ((window (selected-window)))
-                       (if (and (string-match-p ".*eshell.*" (buffer-name))
-                                (window-parameter window 'window-side))
-                           (window-resize window (- eshell-side-window-height
-                                                    (window-height window 'ceiling)))))))
-
-       (advice-add 'other-window
-                   :filter-args
-                   (lambda (args)
-                     "Skip eshell windows in a small lower window during interactive other-window"
-                     (let ((window (next-window)))
-                       (if (and (= 1 (car args))
-                                (string-match-p ".*eshell.*" (buffer-name (window-buffer window)))
-                                (window-parameter window 'window-side))
-                           (cons 2 (cdr args))
-                         args))))
-
-       (advice-add 'wg-switch-to-workgroup
-                   :after
-                   (lambda (args)
-                     "Re-tag eshell side windows"
-                     (dolist (window (window-list))
-                       (if (and (window-dedicated-p window)
-                                (string-match-p ".*eshell.*" (buffer-name (window-buffer window))))
-                           (progn
-                             ;; set 'window-side to skip on 'other-window with eshell advice
-                             (set-window-parameter window 'window-side 'bottom)
-                             (set-window-parameter window 'window-slot '0)
-                             ;; preserve window width
-                             (window-preserve-size window t t))))))
      #+END_SRC
 **** Eshell prompt
      #+BEGIN_EXAMPLE
@@ -645,10 +555,14 @@
         :config
         (ivy-mode 1)
         :init
+        (setq ivy-re-builders-alist
+              '((t . ivy--regex-plus)))
         (add-shortcuts
          '(("f" . find-file))))
       (use-package swiper
-        :bind (("C-s" . swiper)))
+        :config
+        (add-shortcuts
+         '(("u s" . swiper))))
       (use-package counsel)
     #+END_SRC
 *** helm
