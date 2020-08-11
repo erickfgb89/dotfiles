@@ -107,7 +107,7 @@
    like the menu and scroll bars. it's become more of a catch-all for
    global options that don't really fit elsewhere.
    #+BEGIN_SRC emacs-lisp
-     (menu-bar-mode -1)
+     (menu-bar-mode t)
      ;scroll-bar-mode doesn't exist in nw emacs in os x
      (and (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
      (and (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -117,7 +117,7 @@
      (column-number-mode 1)
      (fset 'yes-or-no-p 'y-or-n-p)
      ;; whitespace
-     (global-whitespace-mode 1)
+     (global-whitespace-mode -1)
 
      ;; input.fontbureau.com
      (if (font-family-installed-p "Input Mono Narrow")
@@ -164,6 +164,13 @@
    #+END_SRC
 ** Misc. Bindings
    #+BEGIN_SRC emacs-lisp
+     (key-chord-define-global "ho" 'other-window)
+     (key-chord-define-global "hk" 'kill-this-buffer)
+     (key-chord-define-global "us" 'save-buffer)
+     (key-chord-define-global "hx" 'kmacro-end-or-call-macro)
+     ;;(key-chord-define-global "hp s" 'sr-speedbar-select-window)
+     (key-chord-define-global "uf" 'counsel-find-file)
+     (key-chord-define-global "ub" 'switch-to-buffer)
      (add-shortcuts
       (list
        (cons "o" 'other-window)
@@ -249,6 +256,13 @@
 
    #+END_SRC
 ** packages
+*** key-chord
+    #+BEGIN_SRC emacs-lisp
+      (use-package key-chord
+        :init (progn
+                (key-chord-mode 1)
+                (setq key-chord-two-keys-delay 0.05)))
+    #+END_SRC
 *** hyperbole
     https://www.gnu.org/software/hyperbole/
     #+BEGIN_SRC emacs-lisp
@@ -343,7 +357,6 @@
     for other emulated terminals.
     #+BEGIN_SRC emacs-lisp
       (use-package eshell
-        :config
         :defer 1
         :init
         (defvar use-selected-window nil
@@ -352,6 +365,7 @@
           "Point before command is run.")
         (defvar eshell-side-window-height 10
           "Height of a side window created for eshell.")
+        (key-chord-define-global "he" 'run-eshell)
         (add-shortcuts
          '(("e" . run-eshell)))
         (setenv "VAULT_ADDR" (shell-command-to-string ". ~/.zshrc; echo -n $VAULT_ADDR"))
@@ -361,34 +375,34 @@
                 (append
                  (split-string-and-unquote path ":")
                  exec-path))))
-        ;; (setenv "PATH"
-        ;;         (replace-regexp-in-string
-        ;;          "~"
-        ;;          (getenv "HOME")
-        ;;          (concat "~/.rbenv/shims:"
-        ;;                  "~/.asdf/shims:"
-        ;;                  "~/.asdf/bin:"
-        ;;                  "~/.cabal/bin:"
-        ;;                  "~/dev/eventer-workstation-utils/bin:"
-        ;;                  "/usr/local/bin:"
-        ;;                  "~/Library/Python/3.6/bin:"
-        ;;                  "~/.local/bin:"
-        ;;                  (getenv "PATH"))))
-        ;; (setq exec-path
-        ;;       (append exec-path
-        ;;               (mapcar (lambda (path)
-        ;;                         (replace-regexp-in-string
-        ;;                          "~"
-        ;;                          (getenv "HOME")
-        ;;                          path))
-        ;;                       '("~/.rbenv/shims"
-        ;;                         "~/.asdf/shims"
-        ;;                         "~/.asdf/bin"
-        ;;                         "~/.cabal/bin"
-        ;;                         "~/dev/eventer-workstation-utils/bin"
-        ;;                         "~/Library/Python/3.6/bin"
-        ;;                         "~/.local/bin"
-        ;;                         "/usr/local/bin")))))
+      ;; (setenv "PATH"
+      ;;         (replace-regexp-in-string
+      ;;          "~"
+      ;;          (getenv "HOME")
+      ;;          (concat "~/.rbenv/shims:"
+      ;;                  "~/.asdf/shims:"
+      ;;                  "~/.asdf/bin:"
+      ;;                  "~/.cabal/bin:"
+      ;;                  "~/dev/eventer-workstation-utils/bin:"
+      ;;                  "/usr/local/bin:"
+      ;;                  "~/Library/Python/3.6/bin:"
+      ;;                  "~/.local/bin:"
+      ;;                  (getenv "PATH"))))
+      ;; (setq exec-path
+      ;;       (append exec-path
+      ;;               (mapcar (lambda (path)
+      ;;                         (replace-regexp-in-string
+      ;;                          "~"
+      ;;                          (getenv "HOME")
+      ;;                          path))
+      ;;                       '("~/.rbenv/shims"
+      ;;                         "~/.asdf/shims"
+      ;;                         "~/.asdf/bin"
+      ;;                         "~/.cabal/bin"
+      ;;                         "~/dev/eventer-workstation-utils/bin"
+      ;;                         "~/Library/Python/3.6/bin"
+      ;;                         "~/.local/bin"
+      ;;                         "/usr/local/bin")))))
     #+END_SRC
 **** TODO executables [0/4]
      - [ ] eventer-workstation-utils
