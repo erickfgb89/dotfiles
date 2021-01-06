@@ -1,0 +1,1 @@
+("~/dotfiles/" "~/dev/eventer_email_alerts/" "~/dev/awsmetnp-infra/" "./" "~/dev/awsmet-infra/" "~/dev/temporary_tools/")

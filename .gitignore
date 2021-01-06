@@ -4,3 +4,9 @@
 *.del
 script/.backup.conf
 .DS_Store
+.package-refreshed
+README.el
+history
+lastdir
+projectile.cache
+emacs/.config/emacs/transient
