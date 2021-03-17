@@ -44,3 +44,6 @@ ctrl + alt - 3 : yabai -m display --focus 3
 cmd + ctrl + alt - p : yabai -m window --toggle sticky;\
                        yabai -m window --toggle topmost;\
                        yabai -m window --toggle pip
+
+# float
+cmd + ctrl + alt - m : yabai -m window --grid 1:1:0:0:1:1
