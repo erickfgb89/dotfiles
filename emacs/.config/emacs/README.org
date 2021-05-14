@@ -273,6 +273,7 @@
 *** key-chord
     #+BEGIN_SRC emacs-lisp
       (use-package key-chord
+        :disabled
         :init (progn
                 (key-chord-mode 1)
                 (setq key-chord-two-keys-delay 0.05)
@@ -383,7 +384,7 @@
           "Point before command is run.")
         (defvar eshell-side-window-height 10
           "Height of a side window created for eshell.")
-        (key-chord-define-global "he" 'run-eshell)
+        ;(key-chord-define-global "he" 'run-eshell)
         (add-shortcuts
          '(("e" . run-eshell)))
         (setenv "VAULT_ADDR" (shell-command-to-string ". ~/.zshrc; echo -n $VAULT_ADDR"))
