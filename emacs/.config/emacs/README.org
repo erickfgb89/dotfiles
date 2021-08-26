@@ -294,14 +294,15 @@
 **** SRC blocks
      /Note/: use ~C-c C-, s~ to insert a new code block (see [[https://orgmode.org/manual/Structure-Templates.html][Structure Templates]]).
      #+BEGIN_SRC emacs-lisp
-              ;:bind (([remap org-return] . org-return-indent))))
-                     (use-package org
-                       :init (setq org-src-tab-acts-natively t)
-                       :config (org-babel-do-load-languages
-                                'org-babel-load-languages
-                                '(( ruby . t )
-                                  ( ditaa . t )
-                                  ( shell . t ))))
+       ;:bind (([remap org-return] . org-return-indent))))
+       (use-package org
+         :disabled
+         :init (setq org-src-tab-acts-natively t)
+         :config (org-babel-do-load-languages
+                  'org-babel-load-languages
+                  '(( ruby . t )
+                    ( ditaa . t )
+                    ( shell . t ))))
      #+END_SRC
 ***** Editing
      Use ~(C-c ')~ to edit code in its native mode in a separate buffer
@@ -646,6 +647,7 @@
     Display icons for current mode
     #+BEGIN_SRC emacs-lisp
       (use-package mode-icons
+        :disabled
         :if (display-graphic-p)
         :config
         (mode-icons-mode))
@@ -831,13 +833,15 @@
     The best way I've found to context-switch when something comes up.
     #+BEGIN_SRC emacs-lisp
       (use-package workgroups2
-        :config
+        :init
         (setq wg-emacs-exit-save-behavior nil             ; Options: 'save 'ask nil
               wg-workgroups-mode-exit-save-behavior nil   ; Options: 'save 'ask nil
               wg-mode-line-display-on t                   ; Default: (not (featurep 'powerline))
               wg-flag-modified t                          ; Display modified flags as well
-              wg-mode-line-decor-left-brace "["
-              wg-mode-line-decor-right-brace "]"          ; how to surround it
+              wg-mode-line-decor-left-brace "{"
+              wg-mode-line-decor-right-brace "}"          ; how to surround it
+              wg-session-file (concat user-emacs-directory ".emacs_workgroups")
+              wg-session-load-on-start nil
               wg-mode-line-decor-divider ":")
         (add-shortcuts
          '(("w c" . wg-create-workgroup)

@@ -86,7 +86,7 @@
 
 (advice-add 'wg-switch-to-workgroup
             :after
-            (lambda (args)
+            (lambda (&optional args)
               "Re-tag eshell side windows"
               (dolist (window (window-list))
                 (if (and (window-dedicated-p window)
