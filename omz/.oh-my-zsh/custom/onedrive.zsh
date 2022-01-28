@@ -1,7 +1,7 @@
-onedrive_dir=$(find ~ -maxdepth 1 -type d -name 'OneDrive*')
+init_dir=$(find -L ~ -maxdepth 2 -type d -path "${HOME}/OneDrive*/init")
 
-if [ $? ]; then
-  pushd "$onedrive_dir/init" > /dev/null
+if [ ! -z "$init_dir" ]; then
+  pushd "$init_dir" > /dev/null
   for script in *; do
     source $script
   done
