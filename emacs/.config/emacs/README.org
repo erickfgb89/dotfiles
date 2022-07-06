@@ -41,7 +41,8 @@
       (load (concat user-emacs-directory "custom/lib/shortcuts"))
     #+END_SRC
 *** projectile library
-    #+BEGIN_SRC emacs-lisp
+    I'm removing popup-eshell because it mucks with window layout in a way that breaks ecb
+    #+BEGIN_SRC emacs-lisp#
       (add-to-list 'load-path (concat user-emacs-directory "lib/"))
       (load "popup-eshell")
     #+END_SRC
@@ -388,40 +389,43 @@
         ;(key-chord-define-global "he" 'run-eshell)
         (add-shortcuts
          '(("e" . run-eshell)))
-        (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
-          (setenv "PATH" path)
-          (setq exec-path
-                (append
-                 (split-string-and-unquote path ":")
-                 exec-path))))
-      ;; (setenv "PATH"
-      ;;         (replace-regexp-in-string
-      ;;          "~"
-      ;;          (getenv "HOME")
-      ;;          (concat "~/.rbenv/shims:"
-      ;;                  "~/.asdf/shims:"
-      ;;                  "~/.asdf/bin:"
-      ;;                  "~/.cabal/bin:"
-      ;;                  "~/dev/eventer-workstation-utils/bin:"
-      ;;                  "/usr/local/bin:"
-      ;;                  "~/Library/Python/3.6/bin:"
-      ;;                  "~/.local/bin:"
-      ;;                  (getenv "PATH"))))
-      ;; (setq exec-path
-      ;;       (append exec-path
-      ;;               (mapcar (lambda (path)
-      ;;                         (replace-regexp-in-string
-      ;;                          "~"
-      ;;                          (getenv "HOME")
-      ;;                          path))
-      ;;                       '("~/.rbenv/shims"
-      ;;                         "~/.asdf/shims"
-      ;;                         "~/.asdf/bin"
-      ;;                         "~/.cabal/bin"
-      ;;                         "~/dev/eventer-workstation-utils/bin"
-      ;;                         "~/Library/Python/3.6/bin"
-      ;;                         "~/.local/bin"
-      ;;                         "/usr/local/bin")))))
+         ;'(("e" . eshell)))
+        ;; I tried this to match path with what's in the shell, but it stopped working
+        ;; recently. I'll review another time
+        ;; (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
+        ;;   (setenv "PATH" path)
+        ;;   (setq exec-path
+        ;;         (append
+        ;;          (split-string-and-unquote path ":")
+        ;;          exec-path))))
+        (setenv "PATH"
+                (replace-regexp-in-string
+                 "~"
+                 (getenv "HOME")
+                 (concat "~/.rbenv/shims:"
+                         "~/.asdf/shims:"
+                         "~/.asdf/bin:"
+                         "~/.cabal/bin:"
+                         "~/dev/eventer-workstation-utils/bin:"
+                         "/usr/local/bin:"
+                         "~/Library/Python/3.6/bin:"
+                         "~/.local/bin:"
+                         (getenv "PATH"))))
+        (setq exec-path
+              (append exec-path
+                      (mapcar (lambda (path)
+                                (replace-regexp-in-string
+                                 "~"
+                                 (getenv "HOME")
+                                 path))
+                              '("~/.rbenv/shims"
+                                "~/.asdf/shims"
+                                "~/.asdf/bin"
+                                "~/.cabal/bin"
+                                "~/dev/eventer-workstation-utils/bin"
+                                "~/Library/Python/3.6/bin"
+                                "~/.local/bin"
+                                "/usr/local/bin")))))
     #+END_SRC
 **** TODO executables [0/4]
      - [ ] eventer-workstation-utils
@@ -660,8 +664,8 @@
         :defer 2
         :config
         (projectile-global-mode)
-        (setq projectile-switch-project-action 'wg-switch-to-project
-              projectile-enable-caching t
+        ;(setq projectile-switch-project-action 'wg-switch-to-project
+        (setq projectile-enable-caching t
               projectile-project-search-path '("~/dev/"))
         :init
         (add-shortcuts
@@ -793,7 +797,6 @@
       ;;; https://www.emacswiki.org/emacs/SrSpeedbar
 
       (use-package sr-speedbar
-        :disabled
         :init
         (setq
          sr-speedbar-skip-other-window-p t
@@ -860,6 +863,9 @@
                    (other-window 1))
                (if workgroup ;wg exists
                    (wg-switch-to-workgroup workgroup)
+                 (message "+++")
+                 (message workgroup)
+                 (message "+++")
                  (wg-create-workgroup project-name)
                  (delete-other-windows)
                  (find-file (wg-get-first-existing-dir))
@@ -903,8 +909,8 @@
       ;;  #'display-buffer-at-bottom--display-buffer-at-bottom-around)
 
       (use-package ecb
-                   :disabled
                    :init
+                   :disabled
                    (setq
                     ecb-eshell-auto-activate t
                     ecb-eshell-buffer-sync 'always

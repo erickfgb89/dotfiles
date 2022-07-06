@@ -18,12 +18,14 @@
       (set-window-dedicated-p   ; don't allow anybody to use the tiny window
        (selected-window) t))))
 
+;; disabled for ECB
 (add-to-list 'display-buffer-alist
              `("^\\*eshell.*\\*$"
                (popup-eshell)
                (side . bottom)
                (window-height . ,eshell-side-window-height)
                (preserve-size . (t . nil))))
+
 ;; set variables:
 ;; temp-buffer-max-height
 ;; temp-buffer-max-width
@@ -65,7 +67,7 @@
 
 (advice-add 'other-window
             :before
-            (lambda (args)
+            (lambda (&rest args)
               "Shrink eshell side window to default size"
               (let ((window (selected-window)))
                 (if (and (string-match-p ".*eshell.*" (buffer-name))
