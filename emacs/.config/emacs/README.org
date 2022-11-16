@@ -42,7 +42,7 @@
     #+END_SRC
 *** projectile library
     I'm removing popup-eshell because it mucks with window layout in a way that breaks ecb
-    #+BEGIN_SRC emacs-lisp#
+    #+BEGIN_SRC emacs-lisp
       (add-to-list 'load-path (concat user-emacs-directory "lib/"))
       (load "popup-eshell")
     #+END_SRC
@@ -134,7 +134,7 @@
      (and (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
      (and (fboundp 'tool-bar-mode) (tool-bar-mode -1))
      (and (fboundp 'global-font-lock-mode) (global-font-lock-mode 1))
-     (transient-mark-mode -1)
+     (transient-mark-mode t)
      (show-paren-mode 1)
      (column-number-mode 1)
      (fset 'yes-or-no-p 'y-or-n-p)
@@ -142,8 +142,8 @@
      (global-whitespace-mode -1)
 
      ;; input.fontbureau.com
-     (if (font-family-installed-p "Input Mono")
-         (set-frame-font (concat "-*-Input Mono-normal-normal-"
+     (if (font-family-installed-p "Input")
+         (set-frame-font (concat "-*-Input-normal-normal-"
                                  "extracondensed-*-12-*-*-*-m-0-iso10646-1")))
 
      (setq-default indicate-buffer-boundaries t
@@ -297,13 +297,27 @@
      #+BEGIN_SRC emacs-lisp
        ;:bind (([remap org-return] . org-return-indent))))
        (use-package org
-         :disabled
-         :init (setq org-src-tab-acts-natively t)
-         :config (org-babel-do-load-languages
-                  'org-babel-load-languages
-                  '(( ruby . t )
-                    ( ditaa . t )
-                    ( shell . t ))))
+         :init
+         (setq
+          org-src-tab-acts-natively t
+          org-adapt-indentation t
+          org-directory "~/dev/notes"
+          org-agenda-files (list "inbox.org")
+          org-capture-templates `(("i" "Inbox" entry  (file "inbox.org")
+                                   ,(concat "* TODO %?\n"
+                                            "/Entered on/ %U"))))
+         (defun org-capture-inbox ()
+           (interactive)
+           ;(call-interactively 'org-store-link)
+           (org-capture nil "i"))
+         :config
+         (org-babel-do-load-languages
+          'org-babel-load-languages
+          '(( ruby . t )
+            ( ditaa . t )
+            ( shell . t )))
+         (add-shortcuts
+          '(("c i" . org-capture-inbox))))
      #+END_SRC
 ***** Editing
      Use ~(C-c ')~ to edit code in its native mode in a separate buffer
@@ -366,6 +380,7 @@
     remapped caps lock to Ctrl
     #+BEGIN_SRC emacs-lisp
       (use-package caps-lock
+        :disabled
         :init
         (add-shortcuts
          '(("c" . caps-lock-mode))))
@@ -533,7 +548,7 @@
                (propertize "@" 'face frame)
                (if (magit-get-current-branch)
                    (propertize (magit-get-current-branch) 'face vcs)
-                   (propertize "z" 'face vcs))
+                   (propertize "" 'face vcs))
                (propertize "]──[" 'face frame)
                (propertize (format-time-string "%H:%M" (current-time)) 'face data)
                (propertize "]" 'face frame)
@@ -631,6 +646,13 @@
         :mode "\\.js\\'"
         :init (setq js-indent-level 2))
     #+END_SRC
+*** typescript-mode
+    Typescript major mode
+    #+begin_src emacs-lisp
+      (use-package typescript-mode
+        :init
+        (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode)))
+    #+end_src
 *** magit
     #+BEGIN_SRC emacs-lisp
       (use-package magit
@@ -797,6 +819,7 @@
       ;;; https://www.emacswiki.org/emacs/SrSpeedbar
 
       (use-package sr-speedbar
+        :disabled
         :init
         (setq
          sr-speedbar-skip-other-window-p t
@@ -829,6 +852,7 @@
       (use-package undo-tree
         :ensure t
         :init
+        (setq undo-tree-auto-save-history 'nil)
         (global-undo-tree-mode))
     #+END_SRC
 *** workgroups
