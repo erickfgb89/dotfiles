@@ -4,33 +4,29 @@
   "Point before command is run.")
 (defcustom eshell-side-window-height 10
   "Height of a side window created for eshell.")
+(defcustom eshell-use-side-window 't
+  "Set to nil to open eshell in active buffer")
 
-(defun run-eshell (&optional same-window)
+(defun run-eshell (&optional toggle-side-window)
   (interactive "P")
-  (setq use-selected-window same-window)
-  ;; if this is a side-window
+  (setq eshell-use-selected-window (if eshell-use-side-window
+                                       toggle-side-window
+                                     (null toggle-side-window)))
+  ;; if we're in the popup eshell, kill the window
   (if (window-parameter (selected-window) 'window-side)
       (delete-window)
     (if (projectile-project-p)
-        (call-interactively 'projectile-run-eshell) ; run project-specific eshell
-      (eshell))                 ; run default eshell
-    (unless same-window
-      (set-window-dedicated-p   ; don't allow anybody to use the tiny window
+        (projectile-run-eshell nil) ; run project-specific eshell
+      (eshell nil))                 ; run default eshell
+    (unless eshell-use-selected-window
+      (set-window-dedicated-p   ; don't allow anybody to use the popup window
        (selected-window) t))))
-
-;; disabled for ECB
-(add-to-list 'display-buffer-alist
-             `("^\\*eshell.*\\*$"
-               (popup-eshell)
-               (side . bottom)
-               (window-height . ,eshell-side-window-height)
-               (preserve-size . (t . nil))))
 
 ;; set variables:
 ;; temp-buffer-max-height
 ;; temp-buffer-max-width
 (defun popup-eshell (buffer alist)
-  (if use-selected-window
+  (if eshell-use-selected-window
       (progn
         (display-buffer-same-window buffer alist))
     (display-buffer-in-side-window buffer alist)))
@@ -99,5 +95,12 @@
                       (set-window-parameter window 'window-slot '0)
                       ;; preserve window width
                       (window-preserve-size window t t))))))
+
+(add-to-list 'display-buffer-alist
+             `("^\\*eshell.*\\*$"
+               (popup-eshell)
+               (side . bottom)
+               (window-height . ,eshell-side-window-height)
+               (preserve-size . (t . nil))))
 
 (provide 'popup-eshell)

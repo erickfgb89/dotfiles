@@ -41,7 +41,6 @@
       (load (concat user-emacs-directory "custom/lib/shortcuts"))
     #+END_SRC
 *** projectile library
-    I'm removing popup-eshell because it mucks with window layout in a way that breaks ecb
     #+BEGIN_SRC emacs-lisp
       (add-to-list 'load-path (concat user-emacs-directory "lib/"))
       (load "popup-eshell")
@@ -292,7 +291,7 @@
       (use-package hyperbole)
     #+END_SRC
 *** org-mode
-**** SRC blocks
+**** TODO SRC blocks
      /Note/: use ~C-c C-, s~ to insert a new code block (see [[https://orgmode.org/manual/Structure-Templates.html][Structure Templates]]).
      #+BEGIN_SRC emacs-lisp
        ;:bind (([remap org-return] . org-return-indent))))
@@ -499,36 +498,6 @@
 
        ;; end eshell/bmk
      #+END_SRC
-**** Select existing eshell buffer
-     Switch to eshell buffer instead of creating a duplicate eshell
-     buffer if one already exists in the current window configuration
-     #+BEGIN_SRC emacs-lisp
-       ;; (require 'seq)
-
-       ;; (defun select-or-start-eshell ()
-       ;;   "Select visible eshell window or select/create eshell buffer in this window"
-       ;;   (interactive)
-       ;;   (let* ((esh-buffer-name (if (projectile-project-p)
-       ;;                           (concat "*eshell " (projectile-project-name) "*")
-       ;;                         "*eshell*"))
-       ;;          (e-win (get-buffer-window esh-buffer-name))
-       ;;          (eshell-buffer-p (lambda (buffer)
-       ;;                             (string-prefix-p "*eshell"
-       ;;                                              (buffer-name buffer)))))
-       ;;     (cond ((funcall eshell-buffer-p (current-buffer))
-       ;;            (bury-buffer)
-       ;;            (switch-to-buffer (car (seq-filter eshell-buffer-p
-       ;;                                               (buffer-list)))))
-       ;;           (e-win (select-window e-win))
-       ;;           ((get-buffer esh-buffer-name) (switch-to-buffer esh-buffer-name))
-       ;;           ((projectile-project-p) (projectile-run-eshell))
-       ;;           (t (eshell)))))
-     #+END_SRC
-**** Eshell command hooks
-     Enlarge eshell window to 80% of frame height on command output, if necessary
-     #+BEGIN_SRC emacs-lisp
-
-     #+END_SRC
 **** Eshell prompt
      #+BEGIN_EXAMPLE
      ┌─[/path/to/cwd@branch]──[hh:mm]──[rbenv_version]──[exit_code_if_error]
@@ -543,7 +512,7 @@
                      (data 'dired-ignored)
                      (err 'dired-warning))
               (concat
-               (propertize "┌─[" 'face 'eshell-prompt)
+               (propertize "┌─[" 'face frame)
                (propertize (concat (eshell/pwd)) 'face path)
                (propertize "@" 'face frame)
                (if (magit-get-current-branch)
@@ -552,11 +521,13 @@
                (propertize "]──[" 'face frame)
                (propertize (format-time-string "%H:%M" (current-time)) 'face data)
                (propertize "]" 'face frame)
-               (if (member (car
-                            (split-string
-                             (symbol-name (projectile-project-type)) "-"))
-                           '("rails" "ruby"))
-                   (let ((v (shell-command-to-string "rbenv version")))
+               (if (and
+                    (member (car
+                             (split-string
+                              (symbol-name (projectile-project-type)) "-"))
+                            '("rails" "ruby"))
+                    (executable-find "asdf"))
+                   (let ((v (shell-command-to-string "asdf current ruby")))
                      (string-match
                       "\\([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+\\)" v)
                      (concat
@@ -639,6 +610,11 @@
         :init
           (helm-mode))
     #+END_SRC
+*** mocha
+    For mocha.js testing
+    #+begin_src emacs-lisp
+      (use-package mocha)
+    #+end_src
 *** js2-mode
     enable javascript highlighting for js and json files
     #+BEGIN_SRC emacs-lisp
