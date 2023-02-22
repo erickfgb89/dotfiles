@@ -1,0 +1,20 @@
+---
+# https://github.com/troessner/reek/blob/master/docs/Code-Smells.md
+detectors:
+  UncommunicativeVariableName:
+    enabled: true
+    accept:
+      - k
+      - v
+      - _
+      - i
+      - e
+  TooManyStatements:
+    enabled: true
+    max_statements: 10
+  NestedIterators:
+    max_allowed_nesting: 5
+  InstanceVariableAssumption:
+    enabled: false
+  IrresponsibleModule:
+    enabled: false
