@@ -1,8 +1,0 @@
-backup_target=~/bak/dotfiles
-backup_sources=( .emacs.d/custom
-		 .emacs.d/abbrev_defs
-		 .oh-my-zsh/custom
-		 .zshrc
-		 .emacs
-		 script )
-		
