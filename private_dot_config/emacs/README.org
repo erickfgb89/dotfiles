@@ -739,7 +739,8 @@
                  '(chef-foodcritic
                    ; can't stand the bogus errors from reek
                    ruby-reek)))
-      (use-package helm-flycheck)
+      (use-package helm-flycheck
+        :disabled)
     #+END_SRC
 *** robe
     #+BEGIN_SRC emacs-lisp
