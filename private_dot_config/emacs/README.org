@@ -128,7 +128,7 @@
    like the menu and scroll bars. it's become more of a catch-all for
    global options that don't really fit elsewhere.
    #+BEGIN_SRC emacs-lisp
-     (menu-bar-mode t)
+     (menu-bar-mode -1)
      ;scroll-bar-mode doesn't exist in nw emacs in os x
      (and (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
      (and (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -205,7 +205,8 @@
 *** OS-specific
 **** OS-X Cmd as Hyper
      #+BEGIN_SRC emacs-lisp
-     (setq mac-command-modifier 'hyper) ; make cmd key do Meta
+-       (setq mac-option-modifier 'meta)
+-       (setq mac-command-modifier 'hyper)
      #+END_SRC
 ** Vault
    #+BEGIN_SRC emacs-lisp
@@ -548,6 +549,13 @@
                " "
                ))))
      #+END_SRC
+*** go-mode
+    #+begin_src emacs-lisp
+      (use-package go-mode
+              :init (add-hook 'go-mode-hook
+                              (lambda () (setq-local indent-tabs-mode nil
+                                                     tab-width 2))))
+    #+end_src
 *** god-mode
     Run commands without modifiers. I don't use it much,
     but it comes in handy when I'm browsing around
