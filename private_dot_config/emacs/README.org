@@ -205,8 +205,8 @@
 *** OS-specific
 **** OS-X Cmd as Hyper
      #+BEGIN_SRC emacs-lisp
--       (setq mac-option-modifier 'meta)
--       (setq mac-command-modifier 'hyper)
+       (setq mac-option-modifier 'meta)
+       (setq mac-command-modifier 'hyper)
      #+END_SRC
 ** Vault
    #+BEGIN_SRC emacs-lisp
@@ -327,6 +327,12 @@
     (typically C-S-) to maintain a state from which I can run any custom commands
     in sequence (e.g. C-S-o-o-o = C-x o C-x o C-x o) but I find myself struggling
     on the terminal since no emulator will send C-S to an app.
+*** verb
+    https://github.com/federicotdn/verb
+    An alternative to restclient
+    #+begin_src emacs-lisp
+      (use-package verb)
+    #+end_src
 *** TODO terraform mode
     works well out of the box
     #+begin_src emacs-lisp
