@@ -1,0 +1,6 @@
+* managing these dotfiles
+https://www.chezmoi.io
+* chezmoi config
+make any necessary changes for this system, then drop `chezmoi.toml` into ~/.config/chezmoi/chezmoi.toml
+* including files by module
+`chezmoi.toml` contains module toggles as variables. Toggle these to enable a series of files. 
