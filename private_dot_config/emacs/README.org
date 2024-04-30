@@ -203,7 +203,7 @@
      (global-set-key (kbd "C-z") 'god-mode)
    #+END_SRC
 *** OS-specific
-**** OS-X Cmd as Hyper
+**** OS-X Cmd as Hyper 
      #+BEGIN_SRC emacs-lisp
        (setq mac-option-modifier 'meta)
        (setq mac-command-modifier 'hyper)
@@ -748,6 +748,7 @@
     #+BEGIN_SRC emacs-lisp
       (use-package flycheck
         :hook (ruby-mode . flycheck-mode)
+        :hook (yaml-mode . flycheck-mode)
         :config (setq-default
                  flycheck-disabled-checkers
                  '(chef-foodcritic
@@ -891,8 +892,15 @@
     #+BEGIN_SRC emacs-lisp
       (use-package yaml-mode
         :mode "\\.yml\\'"
-        :mode "\\.yml\\.erb\\'" )
+        :mode "\\.yml\\.erb\\'"
+        :mode "\\.yaml\\'")
     #+END_SRC
+*** highlight-indentation
+    #+begin_src emacs-lisp
+      (use-package highlight-indentation
+        :hook (yaml-mode . highlight-indentation-mode)
+        :hook (yaml-mode . highlight-indentation-current-column-mode))
+    #+end_src
 *** zsh
     I use zsh outside of emacs, and any time I run into
     weird issues with eshell
