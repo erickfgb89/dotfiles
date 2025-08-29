@@ -133,7 +133,8 @@
      (and (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
      (and (fboundp 'tool-bar-mode) (tool-bar-mode -1))
      (and (fboundp 'global-font-lock-mode) (global-font-lock-mode 1))
-     (transient-mark-mode t)
+     (transient-mark-mode 0)
+     (setq set-mark-command-repeat-pop 't)
      (show-paren-mode 1)
      (column-number-mode 1)
      (fset 'yes-or-no-p 'y-or-n-p)
@@ -397,56 +398,56 @@
     If I remember correctly, one works for eshell and the other
     for other emulated terminals.
     #+BEGIN_SRC emacs-lisp
-      (use-package eshell
-        :ensure nil
-        :defer 1
-        :init
-        (defvar use-selected-window nil
-          "Set to t to use the selected window to run eshell")
-        (defvar eshell-pre-command-point nil
-          "Point before command is run.")
-        (defvar eshell-side-window-height 10
-          "Height of a side window created for eshell.")
-        ;(key-chord-define-global "he" 'run-eshell)
-        (add-shortcuts
-         '(("e" . run-eshell)))
-         ;'(("e" . eshell)))
-        ;; I tried this to match path with what's in the shell, but it stopped working
-        ;; recently. I'll review another time
-        ;; (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
-        ;;   (setenv "PATH" path)
-        ;;   (setq exec-path
-        ;;         (append
-        ;;          (split-string-and-unquote path ":")
-        ;;          exec-path))))
-        (setenv "PATH"
-                (replace-regexp-in-string
-                 "~"
-                 (getenv "HOME")
-                 (concat "~/.rbenv/shims:"
-                         "~/.asdf/shims:"
-                         "~/.asdf/bin:"
-                         "~/.cabal/bin:"
-                         "~/dev/eventer-workstation-utils/bin:"
-                         "/usr/local/bin:"
-                         "~/Library/Python/3.6/bin:"
-                         "~/.local/bin:"
-                         (getenv "PATH"))))
-        (setq exec-path
-              (append exec-path
-                      (mapcar (lambda (path)
-                                (replace-regexp-in-string
-                                 "~"
-                                 (getenv "HOME")
-                                 path))
-                              '("~/.rbenv/shims"
-                                "~/.asdf/shims"
-                                "~/.asdf/bin"
-                                "~/.cabal/bin"
-                                "~/dev/eventer-workstation-utils/bin"
-                                "~/Library/Python/3.6/bin"
-                                "~/.local/bin"
-                                "/usr/local/bin")))))
+            (use-package eshell
+              :ensure nil
+              :defer 1
+              :init
+              (defvar use-selected-window nil
+                "Set to t to use the selected window to run eshell")
+              (defvar eshell-pre-command-point nil
+                "Point before command is run.")
+              (defvar eshell-side-window-height 10
+                "Height of a side window created for eshell.")
+              ;(key-chord-define-global "he" 'run-eshell)
+              (add-shortcuts
+               '(("e" . run-eshell)))
+               ;'(("e" . eshell)))
+              ;; I tried this to match path with what's in the shell, but it stopped working
+              ;; recently. I'll review another time
+              ;; (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
+              ;;   (setenv "PATH" path)
+              ;;   (setq exec-path
+              ;;         (append
+              ;;          (split-string-and-unquote path ":")
+              ;;          exec-path))))
+              (setenv "PATH"
+                      (replace-regexp-in-string
+                       "~"
+                       (getenv "HOME")
+                       (concat "~/.rbenv/shims:"
+                               "~/.asdf/shims:"
+                               "~/.asdf/bin:"
+                               "~/.cabal/bin:"
+                               "~/dev/eventer-workstation-utils/bin:"
+                               "/usr/local/bin:"
+                               "~/Library/Python/3.6/bin:"
+                               "~/.local/bin:"
+                               (getenv "PATH"))))
+              (setq exec-path
+                    (append (mapcar (lambda (path)
+                                      (replace-regexp-in-string
+                                       "~"
+                                       (getenv "HOME")
+                                       path))
+                                    '("~/.rbenv/shims"
+                                      "~/.asdf/shims"
+                                      "~/.asdf/bin"
+                                      "~/.cabal/bin"
+                                      "~/dev/eventer-workstation-utils/bin"
+                                      "~/Library/Python/3.6/bin"
+                                      "~/.local/bin"
+                                      "/usr/local/bin"))
+                            exec-path)))
     #+END_SRC
 **** TODO executables [0/4]
      - [ ] eventer-workstation-utils
@@ -747,7 +748,7 @@
 *** flymake
     #+BEGIN_SRC emacs-lisp
       (use-package flycheck
-        :hook (ruby-mode . flycheck-mode)
+        ;:hook (ruby-mode . flycheck-mode)
         :hook (yaml-mode . flycheck-mode)
         :config (setq-default
                  flycheck-disabled-checkers
@@ -984,3 +985,8 @@
         :config
         (setq pug-tab-width 2))
     #+END_SRC
+*** copilot
+    for copilot integration. no agent yet, but we'll wait and see
+    #+begin_src emacs-lisp
+      (use-package copilot)
+    #+end_src

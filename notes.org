@@ -1,0 +1,11 @@
+* Overview
+  This is a summary of the stuff I haven't gotten around to automating yet
+* raycast
+** extensions
+*** aerospace
+* brew
+** aerospace
+** difftastic
+   https://difftastic.wilfred.me.uk
+   For a context-aware diff
+   There should be some git customization opportunities here

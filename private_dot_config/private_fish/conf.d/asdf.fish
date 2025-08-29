@@ -1,2 +1,3 @@
-source ~/.asdf/asdf.fish
+#source ~/.asdf/asdf.fish
+set -xg ASDF_DATA_DIR /Users/erick.aldaz/.asdf
 
